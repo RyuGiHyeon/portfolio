@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>류기현 (Jeff) — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+:root{
+  --green:#12b886;--green-lt:#e6fcf5;--green-dk:#0ca678;
+  --bg:#f8f9fa;--surface:#ffffff;--border:#e9ecef;
+  --text:#212529;--text-2:#495057;--text-3:#868e96;--text-4:#adb5bd;
+  --sans:'Noto Sans KR',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:60px}
+.nav-logo{font-size:1rem;font-weight:700;color:var(--green);letter-spacing:-0.01em}
+.nav-links{display:flex;align-items:center;gap:0.2rem;list-style:none}
+.nav-links a{font-size:0.82rem;color:var(--text-2);padding:0.4rem 0.8rem;border-radius:6px;transition:all .15s;font-weight:400}
+.nav-links a:hover{background:var(--green-lt);color:var(--green)}
+.nav-contact-btn{font-size:0.8rem;font-weight:500;padding:0.42rem 1.1rem;background:var(--green);color:#fff;border-radius:20px;transition:background .15s;margin-left:0.5rem}
+.nav-contact-btn:hover{background:var(--green-dk);color:#fff}
+
+/* LAYOUT */
+.page{max-width:1080px;margin:0 auto;padding:2.5rem 5% 5rem}
+.main-grid{display:grid;grid-template-columns:260px 1fr;gap:2rem;align-items:start}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:1rem;position:sticky;top:76px}
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.8rem 1.6rem}
+.avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green),#20c997);display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1rem;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.profile-name{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:0.1rem;letter-spacing:-0.02em}
+.profile-nick{font-size:0.78rem;color:var(--text-3);margin-bottom:0.5rem}
+.profile-role{font-size:0.75rem;font-weight:500;color:var(--green);background:var(--green-lt);padding:0.2rem 0.65rem;border-radius:20px;display:inline-block;margin-bottom:1rem}
+.profile-bio{font-size:0.82rem;line-height:1.75;color:var(--text-2);font-weight:300;padding-bottom:1rem;border-bottom:1px solid var(--border);margin-bottom:1rem}
+.profile-tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1rem}
+.ptag{font-size:0.7rem;padding:0.22rem 0.65rem;border-radius:20px;background:var(--bg);color:var(--text-2);transition:all .15s;cursor:default;border:1px solid var(--border)}
+.ptag:hover{background:var(--green-lt);color:var(--green);border-color:var(--green)}
+.ptag.green{background:var(--green-lt);color:var(--green);border-color:transparent}
+.contact-links{display:flex;flex-direction:column;gap:0.45rem}
+.contact-item{display:flex;align-items:center;gap:0.55rem;font-size:0.78rem;color:var(--text-3);transition:color .15s}
+.contact-item:hover{color:var(--green)}
+.contact-icon{font-size:0.95rem;width:18px;text-align:center;flex-shrink:0}
+.contact-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem}
+
+.journey-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
+.card-title{font-size:0.8rem;font-weight:600;color:var(--text);margin-bottom:1.2rem}
+.journey-item{display:flex;gap:0.8rem;padding-bottom:1rem;position:relative}
+.journey-item:not(:last-child)::after{content:'';position:absolute;left:6px;top:16px;bottom:0;width:1px;background:var(--border)}
+.j-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:2px solid;margin-top:2px}
+.j-dot.d-green{border-color:var(--green);background:var(--green-lt)}
+.j-dot.d-red{border-color:#fa5252;background:#fff5f5}
+.j-dot.d-orange{border-color:#fd7e14;background:#fff4e6}
+.j-dot.d-blue{border-color:#4c6ef5;background:#edf2ff}
+.j-dot.d-purple{border-color:#9775fa;background:#f3f0ff}
+.j-label{font-size:0.8rem;font-weight:500;color:var(--text);margin-bottom:0.1rem;line-height:1.3}
+.j-sub{font-size:0.7rem;color:var(--text-4);line-height:1.4}
+
+/* FEED */
+.feed{display:flex;flex-direction:column;gap:1.8rem}
+.feed-section-label{font-size:0.72rem;font-weight:600;color:var(--text-3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.6rem;display:flex;align-items:center;gap:0.6rem}
+.feed-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Post card */
+.post-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.3rem 1.5rem;display:block;transition:box-shadow .2s,transform .2s,border-color .2s}
+.post-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-2px);border-color:#dee2e6}
+.post-meta{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.55rem}
+.post-cat{font-size:0.68rem;padding:0.16rem 0.6rem;border-radius:10px;font-weight:600;background:var(--green-lt);color:var(--green)}
+.post-cat.sec{background:#fff0f6;color:#c2255c}
+.post-cat.back{background:#edf2ff;color:#4c6ef5}
+.post-cat.iac{background:#fff4e6;color:#e67700}
+.post-date{font-size:0.7rem;color:var(--text-4)}
+.post-title{font-size:0.97rem;font-weight:600;color:var(--text);margin-bottom:0.38rem;line-height:1.4;letter-spacing:-0.01em}
+.post-desc{font-size:0.81rem;color:var(--text-3);line-height:1.6;font-weight:300;margin-bottom:0.8rem}
+.post-footer{display:flex;align-items:center;justify-content:space-between}
+.post-tags{display:flex;gap:0.35rem;flex-wrap:wrap}
+.post-tag{font-size:0.68rem;color:var(--text-4);padding:0.12rem 0.5rem;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+
+/* Project card */
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.3rem 1.5rem;display:block;transition:box-shadow .2s,transform .2s,border-color .2s}
+.proj-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-2px);border-color:#dee2e6}
+.proj-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.45rem;gap:0.8rem}
+.proj-title{font-size:0.95rem;font-weight:600;color:var(--text);line-height:1.35;letter-spacing:-0.01em}
+.proj-badge{font-size:0.62rem;padding:0.15rem 0.55rem;border-radius:8px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.pb-sec{background:#fff0f6;color:#c2255c}
+.pb-back{background:#edf2ff;color:#4c6ef5}
+.pb-net{background:#e3fafc;color:#0c8599}
+.pb-ops{background:#f3f0ff;color:#7048e8}
+.proj-meta{font-size:0.7rem;color:var(--text-4);margin-bottom:0.5rem}
+.proj-desc{font-size:0.81rem;color:var(--text-3);line-height:1.6;font-weight:300;margin-bottom:0.8rem}
+.proj-stack{display:flex;flex-wrap:wrap;gap:0.35rem}
+.proj-stack span{font-size:0.67rem;padding:0.18rem 0.55rem;border-radius:8px;background:var(--bg);color:var(--text-2);border:1px solid var(--border)}
+
+/* Cred card */
+.cred-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem}
+.skill-chip{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:0.7rem 0.9rem;transition:all .15s}
+.skill-chip:hover{border-color:var(--green);background:var(--green-lt)}
+.skill-chip-cat{font-size:0.6rem;color:var(--text-4);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.35rem;font-weight:600}
+.skill-chip-name{font-size:0.8rem;font-weight:500;color:var(--text-2)}
+
+.cred-item{display:flex;align-items:flex-start;gap:0.8rem;padding-bottom:0.9rem;border-bottom:1px solid var(--border)}
+.cred-item:last-child{border-bottom:none;padding-bottom:0}
+.cred-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.cred-name{font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:0.1rem}
+.cred-sub{font-size:0.73rem;color:var(--text-3)}
+.cred-status{font-size:0.6rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:8px;margin-top:0.3rem;display:inline-block}
+.cs-active{background:var(--green-lt);color:var(--green)}
+.cs-studying{background:#edf2ff;color:#4c6ef5}
+
+.award-item{display:flex;align-items:flex-start;gap:0.8rem;padding-bottom:0.9rem;border-bottom:1px solid var(--border)}
+.award-item:last-child{border-bottom:none;padding-bottom:0}
+.award-icon{font-size:1.1rem;flex-shrink:0}
+.award-title-text{font-size:0.83rem;font-weight:500;color:var(--text);margin-bottom:0.15rem;line-height:1.35}
+.award-meta-text{font-size:0.72rem;color:var(--text-4);margin-bottom:0.2rem}
+.award-desc-text{font-size:0.77rem;color:var(--text-3);line-height:1.55;font-weight:300}
+
+.edu-item{display:flex;align-items:flex-start;gap:0.9rem;padding-bottom:0.9rem;border-bottom:1px solid var(--border)}
+.edu-item:last-child{border-bottom:none;padding-bottom:0}
+.edu-major-text{font-size:0.88rem;font-weight:600;color:var(--text);margin-bottom:0.1rem}
+.edu-school-text{font-size:0.76rem;color:var(--text-3);margin-bottom:0.2rem}
+.edu-period-text{font-size:0.7rem;color:var(--text-4)}
+.edu-note-text{font-size:0.72rem;color:var(--text-3);margin-top:0.3rem;line-height:1.5;font-weight:300}
+.edu-status-badge{font-size:0.6rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:8px;margin-top:0.3rem;display:inline-block;background:#e3fafc;color:#0c8599}
+
+.feed>div[id]{scroll-margin-top:76px}
+.more-btn{display:block;text-align:center;font-size:0.82rem;color:var(--green);font-weight:500;padding:0.75rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;transition:all .15s}
+.more-btn:hover{background:var(--green-lt);border-color:var(--green)}
+
+footer{border-top:1px solid var(--border);margin-top:4rem;padding:1.5rem 5%;display:flex;justify-content:space-between;align-items:center}
+footer p{font-size:0.73rem;color:var(--text-4)}
+footer a{color:var(--green);font-weight:500}
+
+@media(max-width:860px){.main-grid{grid-template-columns:1fr}.sidebar{position:static}.skills-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.skills-grid{grid-template-columns:1fr 1fr}nav{padding:0 4%}.page{padding:1.5rem 4% 4rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">ryugihyeon.dev</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#credentials">Credentials</a></li>
+    <li><a href="/cdn-cgi/l/email-protection#83f1faf6ececb3b2b1b0c3e4eee2eaefade0ecee" class="nav-contact-btn">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+  <div class="main-grid">
+
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar">
+          <img src="assets/images/profile.jpeg" alt="류기현 프로필 사진">
+        </div>
+        <div class="profile-name">류기현</div>
+        <div class="profile-nick">Jeff · RyuGiHyeon</div>
+        <div class="profile-role">Security / Infra Engineer</div>
+        <p class="profile-bio">백엔드 개발로 시작해 보안·인프라로 영역을 넓혀가고 있습니다. BoB 14기를 통해 OT 보안과 탐지시스템 개발을 경험했고, 현재는 IaC 부트캠프에서 인프라 자동화를 공부 중입니다.</p>
+        <div class="profile-tags">
+          <span class="ptag green">Security</span>
+          <span class="ptag green">OT/ICS</span>
+          <span class="ptag">Spring Boot</span>
+          <span class="ptag">Java</span>
+          <span class="ptag">Linux</span>
+          <span class="ptag">On-Premise</span>
+          <span class="ptag">Network</span>
+          <span class="ptag">AWS</span>
+        </div>
+        <div class="contact-links">
+          <a href="/cdn-cgi/l/email-protection#e4969d918b8bd4d5d6d7a48389858d88ca878b89" class="contact-item">
+            <span class="contact-icon">📧</span><span class="contact-text"><span class="__cf_email__" data-cfemail="84f6fdf1ebebb4b5b6b7c4e3e9e5ede8aae7ebe9">[email&#160;protected]</span></span>
+          </a>
+          <a href="https://github.com/RyuGiHyeon" target="_blank" class="contact-item">
+            <span class="contact-icon">🐙</span><span class="contact-text">github.com/RyuGiHyeon</span>
+          </a>
+          <a href="https://www.linkedin.com/in/%EA%B8%B0%ED%98%84-%EB%A5%98-43a6a3377/" target="_blank" class="contact-item">
+            <span class="contact-icon">💼</span><span class="contact-text">LinkedIn 프로필</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="journey-card">
+        <div class="card-title">🗺️ Career Journey</div>
+        <div class="journey-item"><div class="j-dot d-green"></div><div><div class="j-label">IaC 부트캠프</div><div class="j-sub">2026.02 — · 메가스터디IT아카데미</div></div></div>
+        <div class="journey-item"><div class="j-dot d-purple"></div><div><div class="j-label">BoB 14기</div><div class="j-sub">2025.07 — 2026.02 · 보안제품개발트랙</div></div></div>
+        <div class="journey-item"><div class="j-dot d-red"></div><div><div class="j-label">정보보안동아리 Unknown</div><div class="j-sub">2025.02 — 2026.02 · OWSAP TOP 10</div></div></div>
+        <div class="journey-item"><div class="j-dot d-orange"></div><div><div class="j-label">Backend 개발</div><div class="j-sub">2023 — 2025 · Spring Boot / JPA</div></div></div>
+        <div class="journey-item"><div class="j-dot d-blue"></div><div><div class="j-label">울산대학교 입학</div><div class="j-sub">2020 · IT융합전공</div></div></div>
+      </div>
+    </aside>
+
+    <main class="feed">
+
+      <div>
+        <div class="feed-section-label">🛠 Skills</div>
+        <div class="cred-card">
+          <div class="skills-grid">
+            <div class="skill-chip"><div class="skill-chip-cat">Security</div><div class="skill-chip-name">OT / ICS 보안</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Security</div><div class="skill-chip-name">취약점 분석 · 제보</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Security</div><div class="skill-chip-name">OWASP TOP 10</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Security</div><div class="skill-chip-name">Burp Suite</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Backend</div><div class="skill-chip-name">Spring Boot(JPA)</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Database</div><div class="skill-chip-name">MySQL / MariaDB</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Database</div><div class="skill-chip-name">Postgres (Postgis)</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Dev</div><div class="skill-chip-name">Python</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Infra</div><div class="skill-chip-name">AWS (Beanstalk, EC2)</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Infra</div><div class="skill-chip-name">IaC / Terraform / Ansible (학습 중)</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Infra</div><div class="skill-chip-name">Linux · 온프레미스</div></div>
+            <div class="skill-chip"><div class="skill-chip-cat">Network</div><div class="skill-chip-name">홈 네트워크 구축</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="projects">
+        <div class="feed-section-label">🔧 Projects</div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;" id="projects-feed"></div>
+      </div>
+
+      <div id="blog">
+        <div class="feed-section-label">📝 Blog / TIL</div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;" id="blog-feed"></div>
+        <a href="blog.html" class="more-btn" style="margin-top:0.75rem;">모든 포스트 보기 →</a>
+      </div>
+
+      <div id="credentials">
+        <div class="feed-section-label">🎓 Education</div>
+        <div class="cred-card" style="margin-bottom:1rem;"><div id="edu-list"></div></div>
+
+        <div class="feed-section-label">📜 Certifications</div>
+        <div class="cred-card" style="margin-bottom:1rem;"><div id="cert-list"></div></div>
+
+        <div class="feed-section-label">🏆 Awards — 수상</div>
+        <div class="cred-card" style="margin-bottom:1rem;"><div id="awards-list"></div></div>
+
+        <div class="feed-section-label">🔍 Security Research — 취약점 제보</div>
+        <div class="cred-card" style="margin-bottom:1rem;"><div id="security-list"></div></div>
+
+        <div class="feed-section-label">📌 Activities — 대외활동</div>
+        <div class="cred-card"><div id="activity-list"></div></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 류기현 (Jeff) · <a href="https://github.com/RyuGiHyeon" target="_blank">GitHub</a></p>
+  <p>Built with vanilla HTML · CSS · JS</p>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script>
+const catClass={Security:'sec',Backend:'back',Network:'net',DevOps:'ops',Container:'ops'};
+const postCatCls={Security:'sec',Backend:'back',IaC:'iac',Network:''};
+
+// Projects
+const pFeed=document.getElementById('projects-feed');
+PROJECTS.forEach(p=>{
+  const bc=catClass[p.category]||'back';
+  pFeed.innerHTML+=`<a class="proj-card" href="projects/${p.id}.html">
+    <div class="proj-header"><div class="proj-title">${p.title}</div><span class="proj-badge pb-${bc}">${p.category}</span></div>
+    <div class="proj-meta">${p.date}</div>
+    <div class="proj-desc">${p.summary}</div>
+    <div class="proj-stack">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>
+  </a>`;
+});
+
+// Blog
+const bFeed=document.getElementById('blog-feed');
+BLOG_POSTS.slice(0,3).forEach(post=>{
+  const cc=postCatCls[post.category]||'';
+  bFeed.innerHTML+=`<a class="post-card" href="blog/${post.id}.html">
+    <div class="post-meta"><span class="post-cat ${cc}">${post.category}</span><span class="post-date">${post.date}</span></div>
+    <div class="post-title">${post.title}</div>
+    <div class="post-desc">${post.summary}</div>
+    <div class="post-footer"><div class="post-tags">${post.tags.map(t=>`<span class="post-tag">#${t}</span>`).join('')}</div></div>
+  </a>`;
+});
+
+// Education
+const eduList=document.getElementById('edu-list');
+EDUCATION.forEach((e,i)=>{
+  const last=i===EDUCATION.length-1;
+  eduList.innerHTML+=`<div class="edu-item" style="${last?'border-bottom:none;padding-bottom:0':''}">
+    <div style="font-size:1.2rem;flex-shrink:0">🎓</div>
+    <div>
+      <div class="edu-major-text">${e.major} · ${e.degree}</div>
+      <div class="edu-school-text">${e.school}</div>
+      <div class="edu-period-text">${e.period}</div>
+      ${e.note?`<div class="edu-note-text">${e.note}</div>`:''}
+      <span class="edu-status-badge">${e.status}</span>
+    </div>
+  </div>`;
+});
+
+// Certifications
+const certList=document.getElementById('cert-list');
+CERTIFICATIONS.forEach((c,i)=>{
+  const last=i===CERTIFICATIONS.length-1;
+  const sl={active:'취득 완료',studying:'준비 중',expired:'만료'}[c.status];
+  const sc=c.status==='active'?'cs-active':'cs-studying';
+  certList.innerHTML+=`<div class="cred-item" style="${last?'border-bottom:none;padding-bottom:0':''}">
+    <div class="cred-icon">📜</div>
+    <div>
+      <div class="cred-name">${c.name} · ${c.fullName}</div>
+      <div class="cred-sub">${c.issuer} · ${c.date}</div>
+      <span class="cred-status ${sc}">${sl}</span>
+    </div>
+  </div>`;
+});
+
+// Awards / Security Research / Activities
+const aIcon={award:'🏆',security:'🔍',activity:'📌',volunteer:'🤝'};
+function renderAwardSection(elId, type){
+  const el=document.getElementById(elId);
+  const items=AWARDS.filter(a=>a.type===type);
+  if(!items.length){el.innerHTML='<p style="font-size:0.82rem;color:var(--text-4);padding:0.2rem 0">항목 없음</p>';return;}
+  el.innerHTML=items.map((a,i)=>{
+    const last=i===items.length-1;
+    const border=last?'border-bottom:none;padding-bottom:0':'';
+    const badge = type === 'security'
+      ? `<div style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.4rem;">
+          <span style="font-size:0.6rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:8px;background:#fff0f6;color:#c2255c;">Responsible Disclosure</span>
+          ${a.kve ? `<span style="font-size:0.6rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:8px;background:#1e1e2e;color:#cdd6f4;letter-spacing:0.03em;font-family:monospace;">${a.kve}</span>` : ''}
+        </div>`
+      : '';
+    // ← 수상 주체(issuer) 표시
+    const issuerBadge=type==='award'&&a.issuer
+      ?`<span style="font-size:0.6rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:8px;background:#fff9db;color:#e67700;margin-top:0.3rem;display:inline-block;">🏅 ${a.issuer}</span>`
+      :'';
+    return `<div class="award-item" style="${border}">
+      <div class="award-icon">${aIcon[a.type]||'📌'}</div>
+      <div>
+        <div class="award-title-text">${a.title}</div>
+        <div class="award-meta-text">${a.org} · ${a.date}</div>
+        <div class="award-desc-text">${a.desc}</div>
+        ${issuerBadge}${badge}
+      </div>
+    </div>`;
+  }).join('');
+}
+renderAwardSection('awards-list','award');
+renderAwardSection('security-list','security');
+renderAwardSection('activity-list','activity');
+</script>
+</body>
+</html>
