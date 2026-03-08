@@ -210,20 +210,20 @@ List&lt;Cargo&gt; findAllWithOwner();</code></pre>
 // ============================================================
 const EDUCATION = [
   {
-    degree: "복수전공",
+    degree: "학사 복수전공",
     major: "스마트제조ICT",
     school: "USG 공유대학",
     period: "2024 — 2026",
-    status: "재학",
-    note: ""
+    status: "졸업",
+    note: "주요 이수: 정보보안개론, 해킹과보안"
   },
   {
     degree: "학사",
     major: "IT융합전공",
     school: "울산대학교 IT융합학부",
     period: "2020 — 2026",
-    status: "재학",
-    note: "주요 이수: 컴퓨터네트워크, 운영체제, 정보보안개론, 해킹과보안, 데이터베이스"
+    status: "졸업",
+    note: "주요 이수: 컴퓨터네트워크, 운영체제, 데이터베이스"
   }
 ];
 
