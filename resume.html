@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>류기현 (Jeff) — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+/* ══ RESET & VARS ═══════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --green:    #12b886;
+  --green-lt: #e6fcf5;
+  --green-dk: #0ca678;
+
+  --t1: #1a1a2e;
+  --t2: #2d3748;
+  --t3: #5a6880;
+  --t4: #94a3b8;
+
+  --bg:     #f1f3f5;
+  --paper:  #ffffff;
+  --border: #e2e8f0;
+  --border2:#edf2f7;
+
+  --sans: 'Pretendard Variable', 'Noto Sans KR', sans-serif;
+  --mono: 'Space Mono', monospace;
+
+  --pw: 210mm;
+  --px: 14mm;
+  --py: 12mm;
+}
+
+body {
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 9pt;
+  color: var(--t2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ SCREEN SHELL ═══════════════════════════════════════ */
+.screen-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 60px;
+}
+
+/* ── 툴바 ── */
+.toolbar {
+  width: var(--pw);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 2px 12px;
+}
+.toolbar-hint {
+  font-size: 0.7rem;
+  color: #999;
+  font-family: var(--mono);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.toolbar-hint::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+}
+.toolbar-btns { display: flex; gap: 8px; }
+.btn-back {
+  font-size: 0.72rem;
+  padding: 0.38rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #666;
+  text-decoration: none;
+  font-family: var(--mono);
+  background: #fff;
+  transition: all .15s;
+}
+.btn-back:hover { border-color: var(--green); color: var(--green); }
+.btn-pdf {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.38rem 1.1rem;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  transition: background .15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-pdf:hover { background: var(--green-dk); }
+
+/* ══ A4 PAPER ═══════════════════════════════════════════ */
+.page {
+  width: var(--pw);
+  min-height: 297mm;
+  background: var(--paper);
+  box-shadow: 0 6px 36px rgba(0,0,0,.12), 0 1px 6px rgba(0,0,0,.05);
+  padding: var(--py) var(--px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 왼쪽 포인트 라인 */
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3.5px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--green) 0%, #38d9a9 70%, transparent 100%);
+}
+
+/* ══ HEADER ═════════════════════════════════════════════ */
+.r-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid var(--border);
+  margin-bottom: 13px;
+}
+
+.r-photo {
+  width: 66px; height: 66px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--green-lt);
+  outline: 1.5px solid var(--green);
+  outline-offset: 2px;
+  flex-shrink: 0;
+}
+.r-photo-fb {
+  width: 66px; height: 66px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-lt), #b2f2e4);
+  border: 2px solid var(--green);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.r-info { flex: 1; min-width: 0; }
+.r-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+.r-name {
+  font-size: 19pt;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+.r-name-en {
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  color: var(--t4);
+  letter-spacing: 0.07em;
+}
+.r-role {
+  display: inline-flex;
+  align-items: center;
+  font-size: 7.8pt;
+  font-weight: 600;
+  color: var(--green-dk);
+  background: var(--green-lt);
+  padding: 2px 9px;
+  border-radius: 20px;
+  border: 1px solid rgba(18,184,134,.22);
+  margin-bottom: 5px;
+}
+.r-tagline {
+  font-size: 7.6pt;
+  color: var(--t3);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.r-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.r-ct {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 7.3pt;
+  color: var(--t3);
+}
+.r-ct a { color: var(--t3); text-decoration: none; }
+.r-ct-lbl {
+  font-family: var(--mono);
+  font-size: 5.3pt;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  min-width: 34px;
+  text-align: right;
+}
+.r-ct-icon { font-style: normal; font-size: 8pt; width: 13px; text-align: center; }
+
+/* ══ BODY 2-COL ══════════════════════════════════════════ */
+.r-body {
+  display: grid;
+  grid-template-columns: 55mm 1fr;
+  gap: 0 10mm;
+}
+
+/* ══ SECTION ════════════════════════════════════════════ */
+.sec { margin-bottom: 11px; }
+.sec-title {
+  font-family: var(--mono);
+  font-size: 5.8pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+.sec-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(18,184,134,.3), transparent);
+}
+
+/* ══ SKILLS ════════════════════════════════════════════ */
+.sk-grp { margin-bottom: 5px; }
+.sk-lbl {
+  font-size: 5.8pt;
+  font-weight: 700;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 2.5px;
+}
+.sk-tags { display: flex; flex-wrap: wrap; gap: 2px; }
+.sk {
+  font-size: 6.3pt;
+  padding: 1.5px 5.5px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--t3);
+  background: #fafafa;
+  white-space: nowrap;
+}
+.sk.hi {
+  background: var(--green-lt);
+  color: var(--green-dk);
+  border-color: rgba(18,184,134,.28);
+  font-weight: 500;
+}
+
+/* ══ EDUCATION ═══════════════════════════════════════════ */
+.edu { margin-bottom: 7px; }
+.edu-major { font-size: 8pt; font-weight: 600; color: var(--t1); line-height: 1.3; }
+.edu-school { font-size: 7.3pt; color: var(--t2); margin-top: 1px; }
+.edu-row { display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.edu-period { font-family: var(--mono); font-size: 6.3pt; color: var(--t4); }
+.edu-badge { font-size: 5.3pt; font-weight: 600; padding: 1px 5px; border-radius: 4px; background: #e3fafc; color: #0c8599; }
+.edu-note { font-size: 6.8pt; color: var(--t3); margin-top: 2px; line-height: 1.5; font-weight: 300; }
+
+/* ══ CERT ═══════════════════════════════════════════════ */
+.cert { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 5px; }
+.cert-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); margin-top: 4px; flex-shrink: 0; }
+.cert-name { font-size: 7.8pt; font-weight: 600; color: var(--t1); line-height: 1.3; }
+.cert-sub { font-size: 6.3pt; color: var(--t4); margin-top: 1px; font-family: var(--mono); }
+
+/* ══ AWARD / SECURITY ══════════════════════════════════ */
+.aw { margin-bottom: 7px; }
+.aw-row { display: flex; align-items: baseline; justify-content: space-between; gap: 4px; }
+.aw-name { font-size: 7.8pt; font-weight: 600; color: var(--t1); line-height: 1.35; flex: 1; }
+.aw-date { font-family: var(--mono); font-size: 5.8pt; color: var(--t4); white-space: nowrap; flex-shrink: 0; }
+.aw-org { font-size: 6.8pt; color: var(--t3); margin: 1px 0 2px; }
+.aw-desc { font-size: 6.8pt; color: var(--t3); line-height: 1.55; font-weight: 300; }
+.bdg-row { display: flex; flex-wrap: wrap; gap: 2.5px; margin-top: 3px; }
+.bdg { font-size: 5.3pt; font-weight: 600; padding: 1px 5px; border-radius: 4px; }
+.b-award { background: #fff9db; color: #e67700; }
+.b-rd    { background: #fff0f6; color: #c2255c; }
+.b-kve   { background: #f3f0ff; color: #7048e8; }
+
+/* ══ PROJECTS ═══════════════════════════════════════════ */
+.proj {
+  padding: 6px 8px 6px 9px;
+  border-left: 2.5px solid var(--border2);
+  margin-bottom: 8px;
+}
+.proj.feat { border-left-color: var(--green); }
+
+.proj-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+.proj-title { font-size: 8.5pt; font-weight: 700; color: var(--t1); line-height: 1.3; flex: 1; }
+.proj-rt { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+.proj-cat { font-size: 5.3pt; font-weight: 700; padding: 1.5px 5px; border-radius: 4px; }
+.pc-sec  { background: #fff0f6; color: #c2255c; }
+.pc-back { background: #edf2ff; color: #4c6ef5; }
+.pc-net  { background: #e3fafc; color: #0c8599; }
+.proj-date { font-family: var(--mono); font-size: 5.8pt; color: var(--t4); white-space: nowrap; }
+.proj-desc { font-size: 7.3pt; color: var(--t3); line-height: 1.6; font-weight: 300; margin-bottom: 4px; }
+.proj-stk { display: flex; flex-wrap: wrap; gap: 2px; }
+.proj-stk span { font-size: 5.8pt; padding: 1px 5px; border-radius: 3px; background: #f5f5f5; color: var(--t4); border: 1px solid #eee; }
+
+/* ══ ACTIVITIES ═════════════════════════════════════════ */
+.act {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border2);
+}
+.act:last-child { border-bottom: none; padding-bottom: 0; }
+.act-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid var(--green);
+  background: var(--green-lt);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.act-t { font-size: 7.8pt; font-weight: 600; color: var(--t1); line-height: 1.3; margin-bottom: 1px; }
+.act-m { font-size: 6.3pt; color: var(--t4); font-family: var(--mono); margin-bottom: 2px; }
+.act-d { font-size: 6.8pt; color: var(--t3); line-height: 1.5; font-weight: 300; }
+
+/* ══ PRINT ═══════════════════════════════════════════════ */
+@media print {
+  @page { size: A4; margin: 0; }
+  body { background: #fff; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .screen-shell { display: block; padding: 0; margin: 0; }
+  .toolbar { display: none !important; }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    box-shadow: none;
+    margin: 0;
+    padding: var(--py) var(--px);
+    page-break-after: always;
+  }
+  a { color: inherit !important; text-decoration: none !important; }
+  .proj, .act, .edu, .aw { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="screen-shell">
+
+  <!-- 툴바 -->
+  <div class="toolbar">
+    <div class="toolbar-hint">resume.html — PDF 미리보기</div>
+    <div class="toolbar-btns">
+      <a href="index.html" class="btn-back">← 포트폴리오</a>
+      <button class="btn-pdf" onclick="window.print()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        PDF 저장
+      </button>
+    </div>
+  </div>
+
+  <!-- A4 -->
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="r-header">
+      <img
+        class="r-photo"
+        src="assets/images/profile.jpeg"
+        alt="류기현"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+      >
+      <div class="r-photo-fb" id="pfb">🧑‍💻</div>
+
+      <div class="r-info">
+        <div class="r-name-row">
+          <span class="r-name">류기현</span>
+          <span class="r-name-en">Jeff · Ryu Gihyeon</span>
+        </div>
+        <div class="r-role">Security / Infra Engineer</div>
+        <div class="r-tagline">백엔드 개발로 시작해 보안·인프라로 영역을 넓혀가고 있습니다.<br>BoB 14기 수료 · OT/ICS 보안 · 취약점 제보 · IaC 부트캠프 수강 중</div>
+      </div>
+
+      <div class="r-contacts">
+        <div class="r-ct">
+          <span class="r-ct-lbl">Email</span>
+          <i class="r-ct-icon">✉</i>
+          <a href="mailto:ryuoo0123@gmail.com">ryuoo0123@gmail.com</a>
+        </div>
+        <div class="r-ct">
+          <span class="r-ct-lbl">GitHub</span>
+          <i class="r-ct-icon" style="font-size:9pt">⌥</i>
+          <a href="https://github.com/RyuGiHyeon">github.com/RyuGiHyeon</a>
+        </div>
+        <div class="r-ct">
+          <span class="r-ct-lbl">LinkedIn</span>
+          <i class="r-ct-icon" style="font-size:7.5pt;font-family:var(--mono);font-weight:700">in</i>
+          <a href="https://www.linkedin.com/in/%EA%B8%B0%ED%98%84-%EB%A5%98-43a6a3377/">기현-류</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="r-body">
+
+      <!-- ── 좌측 ── -->
+      <div>
+
+        <div class="sec">
+          <div class="sec-title">Skills</div>
+
+          <div class="sk-grp">
+            <div class="sk-lbl">Security</div>
+            <div class="sk-tags">
+              <span class="sk hi">OT / ICS 보안</span>
+              <span class="sk hi">취약점 분석·제보</span>
+              <span class="sk hi">OWASP TOP 10</span>
+              <span class="sk hi">Burp Suite</span>
+              <span class="sk">Wireshark</span>
+              <span class="sk">패킷 분석</span>
+            </div>
+          </div>
+
+          <div class="sk-grp">
+            <div class="sk-lbl">Backend</div>
+            <div class="sk-tags">
+              <span class="sk hi">Spring Boot (JPA)</span>
+              <span class="sk hi">Java</span>
+              <span class="sk">Python</span>
+              <span class="sk">REST API</span>
+              <span class="sk">JWT</span>
+            </div>
+          </div>
+
+          <div class="sk-grp">
+            <div class="sk-lbl">Database</div>
+            <div class="sk-tags">
+              <span class="sk">MySQL · MariaDB</span>
+              <span class="sk">PostgreSQL (PostGIS)</span>
+            </div>
+          </div>
+
+          <div class="sk-grp">
+            <div class="sk-lbl">Infra / Cloud</div>
+            <div class="sk-tags">
+              <span class="sk">AWS EC2 · Beanstalk</span>
+              <span class="sk">Linux · On-Premise</span>
+              <span class="sk">Terraform 학습 중</span>
+              <span class="sk">Ansible 학습 중</span>
+            </div>
+          </div>
+
+          <div class="sk-grp">
+            <div class="sk-lbl">Network</div>
+            <div class="sk-tags">
+              <span class="sk">TCP/IP</span>
+              <span class="sk">VLAN</span>
+              <span class="sk">Mesh 네트워크</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-title">Education</div>
+          <div id="edu-list"></div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-title">Certifications</div>
+          <div id="cert-list"></div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-title">Awards</div>
+          <div id="awards-list"></div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-title">Security Research</div>
+          <div id="security-list"></div>
+        </div>
+
+      </div>
+
+      <!-- ── 우측 ── -->
+      <div>
+
+        <div class="sec">
+          <div class="sec-title">Projects</div>
+          <div id="projects-list"></div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-title">Activities &amp; Experience</div>
+          <div id="activity-list"></div>
+        </div>
+
+      </div>
+
+    </div><!-- /r-body -->
+  </div><!-- /page -->
+</div><!-- /screen-shell -->
+
+<script src="assets/js/data.js"></script>
+<script>
+/* Education */
+const $edu = document.getElementById('edu-list');
+EDUCATION.forEach(e => {
+  $edu.innerHTML += `<div class="edu">
+    <div class="edu-major">${e.major} <span style="font-weight:400;color:var(--t3)">· ${e.degree}</span></div>
+    <div class="edu-school">${e.school}</div>
+    <div class="edu-row">
+      <span class="edu-period">${e.period}</span>
+      <span class="edu-badge">${e.status}</span>
+    </div>
+    ${e.note ? `<div class="edu-note">${e.note}</div>` : ''}
+  </div>`;
+});
+
+/* Certifications */
+const $cert = document.getElementById('cert-list');
+CERTIFICATIONS.forEach(c => {
+  $cert.innerHTML += `<div class="cert">
+    <div class="cert-dot"></div>
+    <div>
+      <div class="cert-name">${c.name} <span style="font-weight:400;font-size:7pt;color:var(--t3)">· ${c.fullName}</span></div>
+      <div class="cert-sub">${c.issuer}</div>
+    </div>
+  </div>`;
+});
+
+/* Awards */
+const $aw = document.getElementById('awards-list');
+AWARDS.filter(a => a.type === 'award').forEach(a => {
+  const ib = a.issuer ? `<span class="bdg b-award">🏅 ${a.issuer}</span>` : '';
+  $aw.innerHTML += `<div class="aw">
+    <div class="aw-row"><span class="aw-name">${a.title}</span><span class="aw-date">${a.date}</span></div>
+    <div class="aw-org">${a.org}</div>
+    <div class="aw-desc">${a.desc}</div>
+    ${ib ? `<div class="bdg-row">${ib}</div>` : ''}
+  </div>`;
+});
+
+/* Security Research */
+const $sec = document.getElementById('security-list');
+AWARDS.filter(a => a.type === 'security').forEach(a => {
+  const kv = (a.kve||a.cve) ? `<span class="bdg b-kve">${a.kve||a.cve}</span>` : '';
+  const rd = `<span class="bdg b-rd">Responsible Disclosure</span>`;
+  $sec.innerHTML += `<div class="aw">
+    <div class="aw-row"><span class="aw-name">${a.title}</span><span class="aw-date">${a.date}</span></div>
+    <div class="aw-org">${a.org}</div>
+    <div class="aw-desc">${a.desc}</div>
+    <div class="bdg-row">${rd}${kv}</div>
+  </div>`;
+});
+
+/* Projects: Security 먼저 */
+const catCls = { Security:'sec', Backend:'back', Network:'net' };
+const $pj = document.getElementById('projects-list');
+const sorted = [...PROJECTS].sort((a,b) =>
+  (a.category==='Security'?0:1) - (b.category==='Security'?0:1)
+);
+sorted.forEach(p => {
+  const bc = catCls[p.category] || 'back';
+  const feat = p.category === 'Security' ? 'feat' : '';
+  const title = p.title.replace(/\s*-\s*수정필요/g, '');
+  $pj.innerHTML += `<div class="proj ${feat}">
+    <div class="proj-top">
+      <span class="proj-title">${title}</span>
+      <div class="proj-rt">
+        <span class="proj-cat pc-${bc}">${p.category}</span>
+        <span class="proj-date">${p.date}</span>
+      </div>
+    </div>
+    <div class="proj-desc">${p.summary}</div>
+    <div class="proj-stk">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>
+  </div>`;
+});
+
+/* Activities */
+const $act = document.getElementById('activity-list');
+AWARDS.filter(a => a.type === 'activity').forEach(a => {
+  $act.innerHTML += `<div class="act">
+    <div class="act-dot"></div>
+    <div>
+      <div class="act-t">${a.title}</div>
+      <div class="act-m">${a.org} · ${a.date}</div>
+      <div class="act-d">${a.desc}</div>
+    </div>
+  </div>`;
+});
+</script>
+</body>
+</html>

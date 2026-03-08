@@ -6,16 +6,195 @@ const PROJECTS = [
   {
     id: "ot-security",
     num: "PROJECT_01",
-    title: "산업 프로토콜 대상 SLM 기반 OT 보안 솔루션 - 수정필요",
-    summary: "BoB 14기 최종 프로젝트. 산업 제어 시스템(ICS/OT) 환경에서 SLM 기반 이상 탐지 및 보안 솔루션 개발.",
-    stack: ["OT Security", "ICS", "SLM", "Python", "Network Protocol"],
+    title: "산업 프로토콜 대상 SLM 기반 공격 탐지 시스템",
+    summary: "BoB 14기 최종 프로젝트. 산업 제어 시스템(ICS/OT) 대상 SLM 기반 APT 공격탐지 시스템 개발",
+    stack: [
+      "OT Security",
+      "Industrial Protocol",
+      "C++",
+      "Python",
+      "Wireshark",
+      "Redis",
+      "Elasticsearch",
+      "Docker"
+    ],
     category: "Security",
     date: "2025.09 — 2025.12",
+
     detail: {
-      overview: "BoB(Best of the Best) 14기 최종 프로젝트로, 산업 프로토콜을 대상으로 한 SLM(Security Log Management) 기반 OT 보안 솔루션을 개발했습니다. 실제 산업 현장의 ICS/SCADA 환경에서 발생할 수 있는 보안 위협을 탐지하고 대응하는 시스템입니다.",
+      overview:
+        "BoB(Best of the Best) 14기 최종 프로젝트로 산업 제어 시스템(ICS/OT) 환경에서 발생할 수 있는 APT 공격을 탐지하는 보안 관제 시스템을 개발했습니다. 산업 프로토콜(Modbus TCP, S7Comm, XGT_FEnet) 트래픽을 분석하여 공격을 탐지하며, OT 장비에 영향을 주지 않는 비침투적(Non-intrusive) 보안 아키텍처를 설계했습니다.",
+
       sections: [
-        { title: "프로젝트 개요", content: "<ul><li>산업 제어 시스템(ICS/OT) 환경의 보안 위협 탐지</li><li>산업용 프로토콜(Modbus, DNP3 등) 트래픽 분석</li><li>SLM 기반 이상 행위 탐지 및 알림 시스템 구축</li><li>BoB 14기 팀 프로젝트 (2025.09 ~ 2025.12)</li></ul>" },
-        { title: "담당 역할", content: "<ul><li>Backend 개발 및 보안 로직 설계</li><li>산업 프로토콜 파싱 및 분석 모듈 구현</li><li>이상 탐지 알고리즘 연구 및 적용</li></ul>" }
+
+        {
+          title: "프로젝트 개요",
+          content: `
+<ul>
+<li>산업 제어 시스템(ICS/OT) 환경의 보안 위협 탐지 시스템 개발</li>
+<li>산업 프로토콜(Modbus TCP, S7Comm, XGT_FEnet) 트래픽 분석 기반 공격 탐지</li>
+<li>Purdue Model 기반 OT 공격 시나리오를 가정한 탐지 시스템 설계</li>
+<li>산업 장비와 직접 통신하지 않는 <b>비침투적 OT 보안 솔루션</b> 개발</li>
+<li>BoB 14기 팀 프로젝트</li>
+</ul>
+`
+        },
+
+        {
+          title: "왜 비침투적인가",
+          content: `
+<p>
+OT 환경에서는 보안 솔루션이 PLC나 SCADA와 직접 통신할 경우 설비 운영에 영향을 줄 수 있습니다.
+따라서 본 프로젝트는 산업 장비와 직접 통신하지 않고 네트워크 트래픽만 수집·분석하는
+<b>비침투적(Non-intrusive) 보안 구조</b>로 설계했습니다.
+</p>
+
+<ul>
+<li><b>방법 1:</b> 산업용 스위치의 SPAN 포트를 활성화하여 트래픽 미러링</li>
+<li><b>방법 2:</b> Network TAP 장비를 이용해 Switch-SCADA 사이 트래픽 수집</li>
+<li>보안 시스템이 OT 장비에 직접 패킷을 송신하지 않도록 설계</li>
+<li>운영 환경 변경 없이 보안 모니터링 적용 가능</li>
+</ul>
+`
+        },
+
+        {
+          title: "솔루션 아키텍처",
+          content: `
+<p>파서 → Redis → ML/DL → SLM → Dashboard 구조의 탐지 파이프라인을 설계했습니다.</p>
+
+<div style="margin-top:10px">
+<img src="/images/projects/ot-architecture.png" style="width:100%;border-radius:8px">
+<p style="font-size:12px;color:#999;margin-top:6px">
+OT 보안 탐지 파이프라인 아키텍처
+</p>
+</div>
+`
+        },
+
+        {
+          title: "공격 시나리오 (Purdue Model 기반)",
+          content: `
+<ul>
+<li>IT 영역(Level 4~5)에서 공격자가 내부 권한 획득</li>
+<li>SCADA가 위치한 Level 3 영역으로 침투</li>
+<li>SCADA 제어권 탈취 후 PLC(Level 1)로 제어 명령 전송</li>
+<li>정상 범위로 위장된 제어 명령을 통한 악성 행위 수행</li>
+<li>산업 프로토콜 트래픽 분석을 통해 해당 공격 탐지</li>
+</ul>
+`
+        },
+
+        {
+          title: "담당 역할",
+          content: `
+<ul>
+<li>산업 프로토콜 분석 및 C++ 기반 패킷 파서 개발</li>
+<li>Wireshark XGT_FEnet dissector 개발 및 공식 MR 제출</li>
+<li>Docker 기반 OT 테스트베드 구축</li>
+<li>Redis / Elasticsearch 기반 저지연 탐지 파이프라인 설계</li>
+<li>비침투적 OT 보안 아키텍처 설계</li>
+</ul>
+`
+        },
+
+        {
+          title: "C++ 파서 성능 개선",
+          content: `
+<p>Wireshark 기반 파서 대신 C++ 전용 파서를 도입하여 성능과 자원 효율을 크게 개선했습니다.</p>
+
+<ul>
+<li>실시간 처리 속도: 2.40s → 0.89s (2.7배 개선)</li>
+<li>처리량: 1,279 pps → 3,370 pps (2.6배 증가)</li>
+<li>메모리 사용: 90.98MB → 25.69MB (72% 절감)</li>
+<li>CPU 사용률: 17.9% → 9% (약 50% 감소)</li>
+</ul>
+
+<div style="margin-top:10px">
+<img src="/images/projects/ot-parser-benchmark.png" style="width:100%;border-radius:8px">
+<p style="font-size:12px;color:#999;margin-top:6px">
+Wireshark Parser vs C++ Parser 성능 비교
+</p>
+</div>
+`
+        },
+
+        {
+          title: "저지연 탐지 파이프라인",
+          content: `
+<ul>
+<li>파서에 Redis와 Elasticsearch를 연동하여 탐지 파이프라인 구성</li>
+<li>ML/DL 모델이 데이터를 메모리에서 직접 조회하도록 설계</li>
+<li>파일 I/O 기반 처리 단계를 줄여 탐지 레이턴시 감소</li>
+<li>실시간 공격 탐지에 적합한 데이터 흐름 구조 설계</li>
+</ul>
+`
+        },
+
+        {
+          title: "실시간 결과 반영 구조",
+          content: `
+<ul>
+<li>SLM 분석 결과 파일을 파일 시스템 이벤트 기반으로 감시</li>
+<li>결과 파일 생성 즉시 대시보드에 반영</li>
+<li>탐지 이벤트와 위협 분석 내용을 실시간 표시</li>
+</ul>
+`
+        },
+
+        {
+          title: "공격 모니터링 시스템",
+          content: `
+<ul>
+<li>Elasticsearch 기반 트래픽 로그 수집 및 시각화</li>
+<li>실시간 트래픽 모니터링 및 공격 이벤트 확인</li>
+<li>트래픽 급증 패턴을 통해 DoS 공격 즉각 식별</li>
+<li>탐지 결과와 위협 설명을 함께 확인 가능한 관제 화면 구현</li>
+</ul>
+`
+        },
+
+        {
+          title: "산업 환경 테스트베드",
+          content: `
+<ul>
+<li>Docker 기반 OT 테스트베드 구축</li>
+<li>SCADA 1대가 PLC 4대를 제어하는 구조</li>
+<li>공격 상황에서 PLC 제어 상태 변화를 시각적으로 확인</li>
+<li>SCADA 컨테이너에서 패킷 캡처 수행</li>
+</ul>
+
+<div style="margin-top:10px">
+<img src="/images/projects/ot-testbed.png" style="width:100%;border-radius:8px">
+<p style="font-size:12px;color:#999;margin-top:6px">
+OT 테스트베드 구성
+</p>
+</div>
+`
+        },
+
+        {
+          title: "현장 연구",
+          content: `
+<ul>
+<li>KISA 스마트보안리빙랩 방문 — 스마트공장 OT 환경 관찰</li>
+<li>한국해양대학교 MASTC 방문 — 선박 OT 시스템 분석</li>
+<li>조타실 및 기관실 견학을 통해 실제 OT 환경 구조 이해</li>
+</ul>
+`
+        },
+
+        {
+          title: "발표 자료",
+          content: `
+<ul>
+<li><a href="/docs/bob/bob-presentation-1st.pdf" target="_blank" style="color:#12b886">1차 발표 자료</a></li>
+<li><a href="/docs/bob/bob-presentation-2nd.pdf" target="_blank" style="color:#12b886">2차 발표 자료</a></li>
+<li><a href="/docs/bob/bob-presentation-final.pdf" target="_blank" style="color:#12b886">최종 발표 자료</a></li>
+</ul>
+`
+        }
+
       ]
     }
   },
@@ -215,7 +394,7 @@ const EDUCATION = [
     school: "USG 공유대학",
     period: "2024 — 2026",
     status: "졸업",
-    note: "주요 이수: 정보보안개론, 해킹과보안"
+    note: "주요 이수: 해킹과보안, IOT, 차세대네트워크프로그래밍"
   },
   {
     degree: "학사",
@@ -223,7 +402,7 @@ const EDUCATION = [
     school: "울산대학교 IT융합학부",
     period: "2020 — 2026",
     status: "졸업",
-    note: "주요 이수: 컴퓨터네트워크, 운영체제, 데이터베이스"
+    note: "주요 이수: 컴퓨터네트워크, 운영체제, "
   }
 ];
 
@@ -237,7 +416,7 @@ const CERTIFICATIONS = [
     issuer: "한국데이터산업진흥원",
     date: "취득",
     status: "active",
-    credentialId: "",
+    credentialId: "SQLD-055020427",
     color: "accent2"
   }
 ];
@@ -276,10 +455,10 @@ const AWARDS = [
   // ── 대외활동 (type: "activity")
   {
     title: "BoB(Best of the Best) 14기",
-    org: "과학기술정보통신부 / 한국정보기술연구원",
+    org: "한국정보기술연구원",
     date: "2025.07 — 2026.02",
     type: "activity",
-    desc: "국내 최고 수준 정보보안 교육 프로그램. 보안 취약점 분석 및 OT 보안 솔루션 개발 프로젝트 수행."
+    desc: "국내 최고 수준 정보보안 교육 프로그램. 보안 심화교육 및 OT 보안 솔루션 개발 프로젝트 수행."
   },
   {
     title: "메가스터디IT아카데미 IaC 부트캠프",
