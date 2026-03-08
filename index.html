@@ -168,16 +168,7 @@ footer a{color:var(--green);font-weight:500}
         <div class="profile-nick">Jeff · RyuGiHyeon</div>
         <div class="profile-role">Security / Infra Engineer</div>
         <p class="profile-bio">백엔드 개발로 시작해 보안·인프라로 영역을 넓혀가고 있습니다. BoB 14기를 통해 OT 보안과 탐지시스템 개발을 경험했고, 현재는 IaC 부트캠프에서 인프라 자동화를 공부 중입니다.</p>
-        <div class="profile-tags">
-          <span class="ptag green">Security</span>
-          <span class="ptag green">OT/ICS</span>
-          <span class="ptag">Spring Boot</span>
-          <span class="ptag">Java</span>
-          <span class="ptag">Linux</span>
-          <span class="ptag">On-Premise</span>
-          <span class="ptag">Network</span>
-          <span class="ptag">AWS</span>
-        </div>
+        <div class="profile-tags" id="profile-tags"></div>
         <div class="contact-links">
           <a href="mailto:ryuoo0123@gmail.com" class="contact-item">
             <span class="contact-icon">📧</span><span class="contact-text">ryuoo0123@gmail.com</span>
@@ -202,20 +193,7 @@ footer a{color:var(--green);font-weight:500}
       <div>
         <div class="feed-section-label">🛠 Skills</div>
         <div class="cred-card">
-          <div class="skills-grid">
-            <div class="skill-chip"><div class="skill-chip-cat">Security</div><div class="skill-chip-name">OT / ICS 보안</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Security</div><div class="skill-chip-name">취약점 분석 · 제보</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Security</div><div class="skill-chip-name">OWASP TOP 10</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Security</div><div class="skill-chip-name">Burp Suite</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Backend</div><div class="skill-chip-name">Spring Boot(JPA)</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Database</div><div class="skill-chip-name">MySQL / MariaDB</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Database</div><div class="skill-chip-name">Postgres (Postgis)</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Dev</div><div class="skill-chip-name">Python</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Infra</div><div class="skill-chip-name">AWS (Beanstalk, EC2)</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Infra</div><div class="skill-chip-name">IaC / Terraform / Ansible (학습 중)</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Infra</div><div class="skill-chip-name">Linux · 온프레미스</div></div>
-            <div class="skill-chip"><div class="skill-chip-cat">Network</div><div class="skill-chip-name">홈 네트워크 구축</div></div>
-          </div>
+          <div class="skills-grid" id="skills-grid"></div>
         </div>
       </div>
 
@@ -263,6 +241,19 @@ footer a{color:var(--green);font-weight:500}
 const catClass={Security:'sec',Backend:'back',Network:'net',DevOps:'ops',Container:'ops'};
 const postCatCls={Security:'sec',Backend:'back',IaC:'iac',Network:''};
 
+// Profile Tags
+const profileTagsEl=document.getElementById('profile-tags');
+PROFILE_TAGS.forEach(tag=>{
+  const cls=tag.highlight?'ptag green':'ptag';
+  profileTagsEl.innerHTML+=`<span class="${cls}">${tag.name}</span>`;
+});
+
+// Skills
+const skillsGrid=document.getElementById('skills-grid');
+SKILLS.forEach(s=>{
+  skillsGrid.innerHTML+=`<div class="skill-chip"><div class="skill-chip-cat">${s.category}</div><div class="skill-chip-name">${s.name}</div></div>`;
+});
+
 // Career Journey
 const journeyList=document.getElementById('journey-list');
 const journeyDotClasses=['d-green','d-purple','d-red','d-orange','d-blue'];
@@ -281,7 +272,7 @@ const journeyDotClasses=['d-green','d-purple','d-red','d-orange','d-blue'];
 const pFeed=document.getElementById('projects-feed');
 [...PROJECTS].reverse().forEach(p=>{
   const bc=catClass[p.category]||'back';
-  pFeed.innerHTML+=`<a class="proj-card" href="pages/project.html?id=${encodeURIComponent(p.id)}">
+  pFeed.innerHTML+=`<a class="proj-card" href="pages/project.html?title=${encodeURIComponent(p.title)}">
     <div class="proj-header"><div class="proj-title">${p.title}</div><span class="proj-badge pb-${bc}">${p.category}</span></div>
     <div class="proj-meta">${p.date}</div>
     <div class="proj-desc">${p.summary}</div>

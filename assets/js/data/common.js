@@ -2,6 +2,32 @@ function sortByKeyAsc(items) {
   return [...items].sort((a, b) => (a.sortKey || 0) - (b.sortKey || 0));
 }
 
+var SKILLS_RAW = [
+  { "category": "Security", "name": "OT / ICS 보안" },
+  { "category": "Security", "name": "취약점 분석 · 제보" },
+  { "category": "Security", "name": "OWASP TOP 10" },
+  { "category": "Security", "name": "Burp Suite" },
+  { "category": "Backend", "name": "Spring Boot(JPA)" },
+  { "category": "Database", "name": "MySQL / MariaDB" },
+  { "category": "Database", "name": "Postgres (Postgis)" },
+  { "category": "Dev", "name": "Python" },
+  { "category": "Infra", "name": "AWS (Beanstalk, EC2)" },
+  { "category": "Infra", "name": "IaC / Terraform / Ansible (학습 중)" },
+  { "category": "Infra", "name": "Linux · 온프레미스" },
+  { "category": "Network", "name": "홈 네트워크 구축" }
+];
+
+var PROFILE_TAGS_RAW = [
+  { "name": "Security", "highlight": true },
+  { "name": "OT/ICS", "highlight": true },
+  { "name": "Spring Boot" },
+  { "name": "Java" },
+  { "name": "Linux" },
+  { "name": "On-Premise" },
+  { "name": "Network" },
+  { "name": "AWS" }
+];
+
 var EDUCATION_RAW = [
   {
     "sortKey": 20260213,
@@ -151,3 +177,5 @@ var EDUCATION = sortByKeyAsc(EDUCATION_RAW);
 var CERTIFICATIONS = sortByKeyAsc(CERTIFICATIONS_RAW);
 var AWARDS = sortByKeyAsc(AWARDS_RAW);
 var CAREER_JOURNEY = sortByKeyAsc(CAREER_JOURNEY_RAW);
+var SKILLS = SKILLS_RAW.slice();
+var PROFILE_TAGS = PROFILE_TAGS_RAW.slice();

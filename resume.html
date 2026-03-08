@@ -11,6 +11,7 @@
 <style>
 /* ══ RESET & VARS ═══════════════════════════════════════ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+[hidden] { display: none !important; }
 
 :root {
   --green:    #12b886;
@@ -105,6 +106,49 @@ body {
   gap: 5px;
 }
 .btn-pdf:hover { background: var(--green-dk); }
+.btn-select {
+  font-size: 0.72rem;
+  padding: 0.38rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #666;
+  text-decoration: none;
+  font-family: var(--mono);
+  background: #fff;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-select:hover { border-color: var(--green); color: var(--green); }
+.picker-panel {
+  width: var(--pw);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  display: none;
+}
+.picker-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+.picker-title { font-size: 0.72rem; font-weight: 700; color: var(--t2); font-family: var(--mono); }
+.picker-actions { display: flex; gap: 6px; }
+.picker-action-btn {
+  font-size: 0.67rem;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #666;
+  border-radius: 6px;
+  padding: 2px 7px;
+  cursor: pointer;
+}
+.picker-action-btn:hover { border-color: var(--green); color: var(--green); }
+.picker-list { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; }
+.picker-item { display: flex; align-items: flex-start; gap: 6px; font-size: 0.71rem; color: var(--t2); }
+.picker-item input { margin-top: 1px; }
 
 /* ══ A4 PAPER ═══════════════════════════════════════════ */
 .page {
@@ -116,6 +160,8 @@ body {
   position: relative;
   overflow: hidden;
 }
+#project-detail-page { display: none; }
+#project-detail-page.has-content { display: block; }
 
 /* 왼쪽 포인트 라인 */
 .page::before {
@@ -331,6 +377,27 @@ body {
 .proj-desc { font-size: 7.3pt; color: var(--t3); line-height: 1.6; font-weight: 300; margin-bottom: 4px; }
 .proj-stk { display: flex; flex-wrap: wrap; gap: 2px; }
 .proj-stk span { font-size: 5.8pt; padding: 1px 5px; border-radius: 3px; background: #f5f5f5; color: var(--t4); border: 1px solid #eee; }
+.proj-detail { margin-bottom: 8px; padding: 7px 8px; border: 1px solid var(--border2); border-radius: 6px; background: #fcfcfd; }
+.proj-detail:last-child { margin-bottom: 0; }
+.proj-detail-head { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+.proj-detail-title { font-size: 7.8pt; font-weight: 700; color: var(--t1); line-height: 1.35; }
+.proj-detail-meta { font-size: 5.8pt; color: var(--t4); font-family: var(--mono); white-space: nowrap; }
+.proj-detail-overview { font-size: 6.9pt; color: var(--t3); line-height: 1.55; margin-bottom: 4px; }
+.proj-detail-body { font-size: 6.8pt; color: var(--t3); line-height: 1.55; }
+.proj-detail-body h4 { font-size: 6.6pt; font-weight: 700; color: var(--t2); margin: 4px 0 2px; text-transform: uppercase; letter-spacing: .05em; }
+.proj-detail-body ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.proj-detail-body li { position: relative; padding-left: 7px; }
+.proj-detail-body li::before { content: '·'; position: absolute; left: 0; top: 0; color: var(--green-dk); }
+.proj-detail-body b, .proj-detail-body strong { color: var(--t2); font-weight: 600; }
+.proj-detail-body img {
+  display: block;
+  width: auto !important;
+  max-width: 68% !important;
+  height: auto !important;
+  max-height: 70mm;
+  margin: 3px auto 4px;
+  object-fit: contain;
+}
 
 /* ══ ACTIVITIES ═════════════════════════════════════════ */
 .act {
@@ -355,20 +422,51 @@ body {
 
 /* ══ PRINT ═══════════════════════════════════════════════ */
 @media print {
-  @page { size: A4; margin: 0; }
+  @page { size: A4; margin: 10mm; }
   body { background: #fff; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
   .screen-shell { display: block; padding: 0; margin: 0; }
   .toolbar { display: none !important; }
+  .picker-panel { display: none !important; }
+  .r-header { margin-bottom: 10px; padding-bottom: 9px; }
+  .r-body { gap: 0 8mm; }
+  .sec { margin-bottom: 8px; }
+  .aw, .edu, .cert, .act { margin-bottom: 5px; }
+  .act { padding-bottom: 5px; }
+  #security-list .aw { margin-bottom: 3px; }
+  #security-list .aw-org { margin: 0; }
+  #security-list .aw-desc { display: none; }
+  #security-list .bdg-row { margin-top: 1px; }
+  .proj {
+    margin-bottom: 5px;
+    padding: 5px 7px 5px 8px;
+  }
+  .proj-desc {
+    margin-bottom: 2px;
+    line-height: 1.45;
+  }
+  .proj-stk { display: none; }
   .page {
-    width: 210mm;
-    min-height: 297mm;
+    width: auto;
+    min-height: 0;
+    height: auto;
     box-shadow: none;
     margin: 0;
-    padding: var(--py) var(--px);
-    page-break-after: always;
+    padding: 0;
+    page-break-after: auto;
+  }
+  .page::before { display: none; }
+  .page + .page.has-content {
+    page-break-before: always;
   }
   a { color: inherit !important; text-decoration: none !important; }
-  .proj, .act, .edu, .aw { break-inside: avoid; }
+  .proj, .proj-detail, .act, .edu, .aw {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .proj-detail-body img {
+    max-width: 62% !important;
+    max-height: 62mm;
+  }
 }
 </style>
 </head>
@@ -385,7 +483,19 @@ body {
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         PDF 저장
       </button>
+      <button class="btn-select" id="toggle-project-picker">프로젝트 선택</button>
     </div>
+  </div>
+
+  <div class="picker-panel" id="project-picker">
+    <div class="picker-head">
+      <div class="picker-title">PDF 포함 프로젝트 선택</div>
+      <div class="picker-actions">
+        <button class="picker-action-btn" type="button" id="select-all-projects">전체 선택</button>
+        <button class="picker-action-btn" type="button" id="clear-all-projects">전체 해제</button>
+      </div>
+    </div>
+    <div class="picker-list" id="project-picker-list"></div>
   </div>
 
   <!-- A4 -->
@@ -528,6 +638,13 @@ body {
 
     </div><!-- /r-body -->
   </div><!-- /page -->
+
+  <div class="page" id="project-detail-page" aria-hidden="true" hidden>
+    <div class="sec">
+      <div class="sec-title">Selected Project Details</div>
+      <div id="project-detail-list"></div>
+    </div>
+  </div>
 </div><!-- /screen-shell -->
 
 <script src="assets/js/data/common.js"></script>
@@ -610,6 +727,82 @@ const $pj = document.getElementById('projects-list');
     <div class="proj-desc">${p.summary}</div>
     <div class="proj-stk">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>
   </div>`;
+});
+
+/* Project Picker + Print Details */
+const $picker = document.getElementById('project-picker');
+const $pickerList = document.getElementById('project-picker-list');
+const $togglePicker = document.getElementById('toggle-project-picker');
+const $selectAll = document.getElementById('select-all-projects');
+const $clearAll = document.getElementById('clear-all-projects');
+const $pd = document.getElementById('project-detail-list');
+const $detailPage = document.getElementById('project-detail-page');
+let selectedProjectTitles = new Set();
+
+function renderProjectPicker() {
+  $pickerList.innerHTML = [...PROJECTS].reverse().map(p => `
+    <label class="picker-item">
+      <input type="checkbox" data-title="${encodeURIComponent(p.title)}" ${selectedProjectTitles.has(p.title) ? 'checked' : ''}>
+      <span>${p.title} <span style="color:var(--t4)">(${p.date})</span></span>
+    </label>
+  `).join('');
+}
+
+function renderProjectDetailsForPrint() {
+  const selected = [...PROJECTS].reverse().filter(p => selectedProjectTitles.has(p.title));
+  if (!selected.length) {
+    $detailPage.classList.remove('has-content');
+    $detailPage.setAttribute('aria-hidden', 'true');
+    $detailPage.hidden = true;
+    $pd.innerHTML = '';
+    return;
+  }
+  $detailPage.classList.add('has-content');
+  $detailPage.setAttribute('aria-hidden', 'false');
+  $detailPage.hidden = false;
+  $pd.innerHTML = selected.map(p => {
+    const sections = (p.detail?.sections || [])
+      .map(s => `<h4>${s.title}</h4>${s.content || ''}`)
+      .join('');
+    return `<div class="proj-detail">
+      <div class="proj-detail-head">
+        <div class="proj-detail-title">${p.title}</div>
+        <div class="proj-detail-meta">${p.date}</div>
+      </div>
+      <div class="proj-detail-overview">${p.detail?.overview || ''}</div>
+      <div class="proj-detail-body">${sections}</div>
+    </div>`;
+  }).join('');
+}
+
+renderProjectPicker();
+renderProjectDetailsForPrint();
+
+$togglePicker.addEventListener('click', () => {
+  $picker.style.display = $picker.style.display === 'block' ? 'none' : 'block';
+});
+
+$selectAll.addEventListener('click', () => {
+  selectedProjectTitles = new Set(PROJECTS.map(p => p.title));
+  renderProjectPicker();
+  renderProjectDetailsForPrint();
+});
+
+$clearAll.addEventListener('click', () => {
+  selectedProjectTitles = new Set();
+  renderProjectPicker();
+  renderProjectDetailsForPrint();
+});
+
+$pickerList.addEventListener('change', (e) => {
+  const el = e.target;
+  if (!(el instanceof HTMLInputElement)) return;
+  const rawTitle = el.dataset.title;
+  if (!rawTitle) return;
+  const title = decodeURIComponent(rawTitle);
+  if (el.checked) selectedProjectTitles.add(title);
+  else selectedProjectTitles.delete(title);
+  renderProjectDetailsForPrint();
 });
 
 /* Activities */

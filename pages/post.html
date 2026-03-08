@@ -26,8 +26,8 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .nav-contact-btn{font-size:0.8rem;font-weight:500;padding:0.42rem 1.1rem;background:var(--green);color:#fff;border-radius:20px;margin-left:0.5rem}
 .nav-contact-btn:hover{background:var(--green-dk);color:#fff}
 
-.page{max-width:740px;margin:0 auto;padding:2.5rem 5% 5rem}
-.layout{display:grid;grid-template-columns:220px 1fr;gap:1.2rem;align-items:start}
+.page{width:min(1380px,96vw);margin:0 auto;padding:2.5rem 1rem 5rem}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:1.4rem;align-items:start}
 .toc{position:sticky;top:76px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.9rem 0.85rem}
 .toc-title{font-size:0.72rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.55rem}
 .toc-links{display:flex;flex-direction:column;gap:0.3rem}
@@ -51,7 +51,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 
 .post-body{line-height:1.85;color:var(--text-2)}
 .post-body h3{font-size:1rem;font-weight:600;color:var(--text);margin:1.8rem 0 0.8rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
-.post-body p{font-size:0.88rem;margin-bottom:0.9rem;font-weight:300}
+.post-body p{font-size:0.88rem;margin-bottom:0.9rem;font-weight:300;white-space:pre-line}
 .post-body ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;padding-left:0.2rem}
 .post-body li{font-size:0.88rem;color:var(--text-2);display:flex;align-items:flex-start;gap:0.6rem;font-weight:300;line-height:1.65}
 .post-body li::before{content:'·';color:var(--green);font-size:1rem;flex-shrink:0;margin-top:-1px}
@@ -60,6 +60,16 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .post-body code{font-family:'Courier New',monospace;font-size:0.8rem;color:#cdd6f4;line-height:1.7}
 .post-body pre code{display:block}
 .post-body :not(pre)>code{background:var(--green-lt);border-radius:4px;padding:0.1rem 0.4rem;color:var(--green);font-size:0.82rem}
+.post-body img{
+  display:block;
+  width:auto !important;
+  max-width:min(100%,880px) !important;
+  height:auto !important;
+  max-height:520px !important;
+  object-fit:contain;
+  margin:0.75rem auto;
+  border-radius:8px;
+}
 
 .post-nav{display:flex;justify-content:space-between;align-items:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);gap:1rem}
 .post-nav-btn{font-size:0.78rem;color:var(--text-3);padding:0.5rem 1rem;border:1px solid var(--border);border-radius:8px;background:var(--surface);transition:all .15s;max-width:48%}
@@ -69,8 +79,13 @@ footer{border-top:1px solid var(--border);margin-top:3rem;padding:1.5rem 5%;disp
 footer p{font-size:0.73rem;color:var(--text-4)}
 footer a{color:var(--green);font-weight:500}
 
+@media(max-width:1100px){.page{width:min(1100px,95vw)}}
 @media(max-width:860px){.layout{grid-template-columns:1fr}.toc{position:static}}
-@media(max-width:560px){nav{padding:0 4%}.page{padding:1.5rem 4% 4rem}}
+@media(max-width:560px){
+  nav{padding:0 4%}
+  .page{width:100%;padding:1.5rem 4% 4rem}
+  .post-body img{max-height:360px !important}
+}
 </style>
 </head>
 <body>
@@ -82,6 +97,7 @@ footer a{color:var(--green);font-weight:500}
     <li><a href="../blog.html" class="active">Blog</a></li>
     <li><a href="../index.html#credentials">Credentials</a></li>
     <li><a href="mailto:ryuoo0123@gmail.com" class="nav-contact-btn">Contact</a></li>
+    <li><a href="../resume.html" target="_blank">Resume PDF</a></li>
   </ul>
 </nav>
 
@@ -117,6 +133,7 @@ const title=params.get('title');
 const idx=BLOG_POSTS.findIndex(p=>p.title===title);
 const post=BLOG_POSTS[idx];
 const toAnchorId=(sTitle, i)=>`section-${i+1}-${sTitle.toLowerCase().replace(/[^a-z0-9가-힣]+/g,'-').replace(/(^-|-$)/g,'')}`;
+const normalizeSectionHtml=(html='')=>String(html).trim().replace(/<p>\s+/g,'<p>').replace(/\s+<\/p>/g,'</p>');
 
 if(!post){
   document.getElementById('post-content').innerHTML='<p style="color:var(--text-4)">포스트를 찾을 수 없습니다.</p>';
@@ -134,7 +151,7 @@ if(!post){
       <div class="post-tags">${post.tags.map(t=>`<span class="post-tag">#${t}</span>`).join('')}</div>
     </div>
     ${post.detail && post.detail.overview ? `<div class="post-overview">${post.detail.overview}</div>` : ''}
-    <div class="post-body">${sections.map(s=>`<div class="proj-section" id="${s.anchor}"><h3>${s.title}</h3>${s.content}</div>`).join('')}</div>`;
+    <div class="post-body">${sections.map(s=>`<div class="proj-section" id="${s.anchor}"><h3>${s.title}</h3>${normalizeSectionHtml(s.content)}</div>`).join('')}</div>`;
 
   const toc=document.getElementById('post-toc');
   const tocLinks=document.getElementById('post-toc-links');

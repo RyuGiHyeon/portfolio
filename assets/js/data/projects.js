@@ -1,8 +1,6 @@
 var PROJECTS_RAW = [
   {
-    "id": "bob-phishing",
     "sortKey": 20250819,
-    "num": "PROJECT_02",
     "title": "BoB Wiki 피싱 훈련 사이트 개발 - 수정 필요",
     "summary": "BoB 14기 개발톤. 실제 BoB 위키를 모사한 피싱 훈련용 사이트를 개발하여 보안 인식 제고.",
     "stack": [
@@ -28,9 +26,7 @@ var PROJECTS_RAW = [
     }
   },
   {
-    "id": "classum-vuln",
     "sortKey": 20250701,
-    "num": "PROJECT_05",
     "title": "CLASSUM 취약점 제보 - 수정 필요",
     "summary": "교육 플랫폼 CLASSUM의 보안 취약점을 발견하고 공식 제보. 책임감 있는 취약점 공개(Responsible Disclosure) 프로세스 경험.",
     "stack": [
@@ -55,9 +51,7 @@ var PROJECTS_RAW = [
     }
   },
   {
-    "id": "growup",
     "sortKey": 20240215,
-    "num": "PROJECT_06",
     "title": "GrowUp — 성장 기록 플랫폼 - 수정 필요",
     "summary": "UMC 5기 팀 프로젝트. 개인 성장과 목표 관리를 위한 소셜 플랫폼 Backend 개발.",
     "stack": [
@@ -80,9 +74,7 @@ var PROJECTS_RAW = [
     }
   },
   {
-    "id": "hanbakwi",
     "sortKey": 20250615,
-    "num": "PROJECT_04",
     "title": "한바퀴 — 위치 기반 화물 추천 및 매칭 플랫폼 - 수정 필요",
     "summary": "위치 기반으로 화물과 운송 차량을 매칭하는 플랫폼. Backend(Spring JPA) + Android 풀스택 개발.",
     "stack": [
@@ -110,9 +102,7 @@ var PROJECTS_RAW = [
     }
   },
   {
-    "id": "home-network",
     "sortKey": 20241001,
-    "num": "PROJECT_07",
     "title": "홈 네트워크 Mesh 구성 - 수정 필요",
     "summary": "저가 IPTIME 공유기 여러 대를 Mesh 구성하여 가정 내 Wi-Fi 커버리지 확장. 직접 설계·구축·운영.",
     "stack": [
@@ -138,9 +128,34 @@ var PROJECTS_RAW = [
     }
   },
   {
-    "id": "ot-security",
+    "sortKey": 20241201,
+    "title": "알림IT - 수정 필요",
+    "summary": "울산대학교 학부 공지사항 알람 제공 어플",
+    "stack": [
+      "Spring Boot",
+      "SQLi",
+      "XSS",
+      "CSRF",
+      "Linux"
+    ],
+    "category": "Backend",
+    "date": "2024.12 — ",
+    "detail": {
+      "overview": "울산대학교 학부 공지사항 알람 제공 어플",
+      "sections": [
+        {
+          "title": "분석 항목",
+          "content": "<ul><li>A01 Broken Access Control — 권한 검증 우회 실습</li><li>A02 Cryptographic Failures — 취약한 암호화 탐지</li><li>A03 Injection — SQL Injection, Command Injection</li><li>A07 XSS — Reflected / Stored / DOM-based 유형별 분석</li><li>A08 SSRF — 내부망 접근 시나리오 실습</li></ul>"
+        },
+        {
+          "title": "대응 방안 정리",
+          "content": "<ul><li>각 취약점별 Secure Coding 가이드라인 문서화</li><li>취약한 코드 vs 안전한 코드 비교 정리</li><li>WAF·보안 헤더·입력값 검증 등 방어 레이어 구성 방법 정리</li></ul>"
+        }
+      ]
+    }
+  },
+  {
     "sortKey": 20250901,
-    "num": "PROJECT_01",
     "title": "산업 프로토콜 대상 SLM 기반 공격 탐지 시스템",
     "summary": "BoB 14기 최종 프로젝트. 산업 제어 시스템(ICS/OT) 대상 SLM 기반 APT 공격탐지 시스템 개발",
     "stack": [
@@ -242,9 +257,7 @@ var PROJECTS_RAW = [
     }
   },
   {
-    "id": "owasp-analysis",
     "sortKey": 20250630,
-    "num": "PROJECT_03",
     "title": "OWASP TOP 10 취약점 분석 - 수정 필요",
     "summary": "OWASP TOP 10 취약점을 직접 실습 환경에서 재현·분석하고 대응 방안을 정리한 보안 연구 프로젝트.",
     "stack": [
