@@ -395,7 +395,7 @@ body {
     <div class="r-header">
       <img
         class="r-photo"
-        src="assets/images/profile.jpeg"
+        src="assets/profile.jpeg"
         alt="류기현"
         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
       >
@@ -530,11 +530,12 @@ body {
   </div><!-- /page -->
 </div><!-- /screen-shell -->
 
-<script src="assets/js/data.js"></script>
+<script src="assets/js/data/common.js"></script>
+<script src="assets/js/data/projects.js"></script>
 <script>
 /* Education */
 const $edu = document.getElementById('edu-list');
-EDUCATION.forEach(e => {
+[...EDUCATION].reverse().forEach(e => {
   $edu.innerHTML += `<div class="edu">
     <div class="edu-major">${e.major} <span style="font-weight:400;color:var(--t3)">· ${e.degree}</span></div>
     <div class="edu-school">${e.school}</div>
@@ -548,19 +549,27 @@ EDUCATION.forEach(e => {
 
 /* Certifications */
 const $cert = document.getElementById('cert-list');
-CERTIFICATIONS.forEach(c => {
+[...CERTIFICATIONS].reverse().forEach(c => {
+  const nameLine = c.fullName
+    ? `${c.name} <span style="font-weight:400;font-size:7pt;color:var(--t3)">· ${c.fullName}</span>`
+    : c.name;
+  const statusMap = { active: '취득', studying: '준비 중', expired: '만료', '취득': '취득', '준비 중': '준비 중', '만료': '만료' };
+  const statusLabel = statusMap[c.status] || (c.status || '');
+  const raw = String(c.date || '').replace(/[^0-9]/g, '');
+  const dateLabel = raw.length === 8 ? `${raw.slice(0,4)}.${raw.slice(4,6)}.${raw.slice(6,8)}` : (c.date || '');
   $cert.innerHTML += `<div class="cert">
     <div class="cert-dot"></div>
     <div>
-      <div class="cert-name">${c.name} <span style="font-weight:400;font-size:7pt;color:var(--t3)">· ${c.fullName}</span></div>
-      <div class="cert-sub">${c.issuer}</div>
+      <div class="cert-name">${nameLine}</div>
+      <div class="cert-sub">${c.issuer} · ${dateLabel} · ${statusLabel}</div>
+      ${c.credentialId ? `<div class="cert-sub">ID · ${c.credentialId}</div>` : ''}
     </div>
   </div>`;
 });
 
 /* Awards */
 const $aw = document.getElementById('awards-list');
-AWARDS.filter(a => a.type === 'award').forEach(a => {
+AWARDS.filter(a => a.type === 'award').reverse().forEach(a => {
   const ib = a.issuer ? `<span class="bdg b-award">🏅 ${a.issuer}</span>` : '';
   $aw.innerHTML += `<div class="aw">
     <div class="aw-row"><span class="aw-name">${a.title}</span><span class="aw-date">${a.date}</span></div>
@@ -572,7 +581,7 @@ AWARDS.filter(a => a.type === 'award').forEach(a => {
 
 /* Security Research */
 const $sec = document.getElementById('security-list');
-AWARDS.filter(a => a.type === 'security').forEach(a => {
+AWARDS.filter(a => a.type === 'security').reverse().forEach(a => {
   const kv = (a.kve||a.cve) ? `<span class="bdg b-kve">${a.kve||a.cve}</span>` : '';
   const rd = `<span class="bdg b-rd">Responsible Disclosure</span>`;
   $sec.innerHTML += `<div class="aw">
@@ -583,16 +592,13 @@ AWARDS.filter(a => a.type === 'security').forEach(a => {
   </div>`;
 });
 
-/* Projects: Security 먼저 */
+/* Projects */
 const catCls = { Security:'sec', Backend:'back', Network:'net' };
 const $pj = document.getElementById('projects-list');
-const sorted = [...PROJECTS].sort((a,b) =>
-  (a.category==='Security'?0:1) - (b.category==='Security'?0:1)
-);
-sorted.forEach(p => {
+[...PROJECTS].reverse().forEach(p => {
   const bc = catCls[p.category] || 'back';
   const feat = p.category === 'Security' ? 'feat' : '';
-  const title = p.title.replace(/\s*-\s*수정필요/g, '');
+  const title = p.title;
   $pj.innerHTML += `<div class="proj ${feat}">
     <div class="proj-top">
       <span class="proj-title">${title}</span>
@@ -608,7 +614,7 @@ sorted.forEach(p => {
 
 /* Activities */
 const $act = document.getElementById('activity-list');
-AWARDS.filter(a => a.type === 'activity').forEach(a => {
+AWARDS.filter(a => a.type === 'activity').reverse().forEach(a => {
   $act.innerHTML += `<div class="act">
     <div class="act-dot"></div>
     <div>

@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
 :root{
   --green:#12b886;--green-lt:#e6fcf5;--green-dk:#0ca678;
   --bg:#f8f9fa;--surface:#ffffff;--border:#e9ecef;
@@ -26,10 +27,16 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .nav-contact-btn{font-size:0.8rem;font-weight:500;padding:0.42rem 1.1rem;background:var(--green);color:#fff;border-radius:20px;margin-left:0.5rem}
 .nav-contact-btn:hover{background:var(--green-dk);color:#fff}
 
-.page{max-width:740px;margin:0 auto;padding:2.5rem 5% 5rem}
-
-.back-link{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-3);margin-bottom:2rem;transition:color .15s}
+.page{max-width:980px;margin:0 auto;padding:2.5rem 5% 5rem}
+.back-link{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-3);margin-bottom:1rem;transition:color .15s}
 .back-link:hover{color:var(--green)}
+
+.layout{display:grid;grid-template-columns:230px 1fr;gap:1.2rem;align-items:start}
+.toc{position:sticky;top:76px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.9rem 0.85rem}
+.toc-title{font-size:0.72rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.55rem}
+.toc-links{display:flex;flex-direction:column;gap:0.3rem}
+.toc-link{font-size:0.78rem;color:var(--text-3);line-height:1.4;padding:0.2rem 0.25rem;border-radius:6px}
+.toc-link:hover{background:var(--green-lt);color:var(--green)}
 
 .proj-header{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
 .proj-num{font-size:0.7rem;color:var(--text-4);margin-bottom:0.5rem;letter-spacing:0.05em}
@@ -44,14 +51,19 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .proj-stack span{font-size:0.68rem;padding:0.18rem 0.6rem;border-radius:8px;background:var(--bg);color:var(--text-2);border:1px solid var(--border)}
 
 .proj-overview{background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:1.1rem 1.3rem;margin-bottom:2rem;font-size:0.87rem;line-height:1.8;color:var(--text-2);font-weight:300}
-
 .proj-section{margin-bottom:1.8rem}
 .proj-section h3{font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:0.8rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
-.proj-section ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem;padding-left:0.2rem}
-.proj-section li{font-size:0.87rem;color:var(--text-2);display:flex;align-items:flex-start;gap:0.6rem;font-weight:300;line-height:1.65}
-.proj-section li::before{content:'·';color:var(--green);font-size:1rem;flex-shrink:0}
+.proj-section ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem;padding-left:0}
+.proj-section li{position:relative;padding-left:0.9rem;font-size:0.87rem;color:var(--text-2);font-weight:300;line-height:1.65}
+.proj-section li::before{content:'·';position:absolute;left:0;top:0;color:var(--green);font-size:1rem}
 .proj-section li strong{color:var(--text);font-weight:500}
 .proj-section a{color:var(--green)}
+.proj-group{margin-bottom:2.2rem}
+.proj-group h2{font-size:1.02rem;font-weight:700;color:var(--text);margin-bottom:0.9rem}
+.proj-group-card{border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:1rem}
+.proj-subsection{margin-bottom:1.2rem}
+.proj-subsection:last-child{margin-bottom:0}
+.toc-link.sub{padding-left:0.85rem;font-size:0.74rem}
 
 .proj-nav{display:flex;justify-content:space-between;align-items:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);gap:1rem}
 .proj-nav-btn{font-size:0.78rem;color:var(--text-3);padding:0.5rem 1rem;border:1px solid var(--border);border-radius:8px;background:var(--surface);transition:all .15s;max-width:48%}
@@ -61,6 +73,7 @@ footer{border-top:1px solid var(--border);margin-top:3rem;padding:1.5rem 5%;disp
 footer p{font-size:0.73rem;color:var(--text-4)}
 footer a{color:var(--green);font-weight:500}
 
+@media(max-width:860px){.layout{grid-template-columns:1fr}.toc{position:static}}
 @media(max-width:560px){nav{padding:0 4%}.page{padding:1.5rem 4% 4rem}}
 </style>
 </head>
@@ -78,11 +91,19 @@ footer a{color:var(--green);font-weight:500}
 
 <div class="page">
   <a class="back-link" href="../index.html#projects">← Projects로</a>
-  <div id="proj-content"><p style="color:var(--text-4);font-size:0.85rem">로딩 중...</p></div>
-  <div class="proj-nav">
-    <a id="prev-proj" href="#" class="proj-nav-btn" style="visibility:hidden">← 이전 프로젝트</a>
-    <a href="../index.html#projects" style="font-size:0.78rem;color:var(--text-3)">목록</a>
-    <a id="next-proj" href="#" class="proj-nav-btn" style="visibility:hidden;text-align:right">다음 프로젝트 →</a>
+  <div class="layout">
+    <aside class="toc" id="proj-toc" style="display:none">
+      <div class="toc-title">Contents</div>
+      <div class="toc-links" id="proj-toc-links"></div>
+    </aside>
+    <div>
+      <div id="proj-content"><p style="color:var(--text-4);font-size:0.85rem">로딩 중...</p></div>
+      <div class="proj-nav">
+        <a id="prev-proj" href="#" class="proj-nav-btn" style="visibility:hidden">← 이전 프로젝트</a>
+        <a href="../index.html#projects" style="font-size:0.78rem;color:var(--text-3)">목록</a>
+        <a id="next-proj" href="#" class="proj-nav-btn" style="visibility:hidden;text-align:right">다음 프로젝트 →</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -91,23 +112,56 @@ footer a{color:var(--green);font-weight:500}
   <p>Built with vanilla HTML · CSS · JS</p>
 </footer>
 
-<script src="../assets/js/data.js"></script>
+<script src="../assets/js/data/common.js"></script>
+<script src="../assets/js/data/projects.js"></script>
 <script>
 const catClass={Security:'sec',Backend:'back',Network:'net',DevOps:'ops',Container:'ops'};
-const PROJECT_ID='classum-vuln';
-const id=PROJECT_ID;
+const params=new URLSearchParams(location.search);
+const id=params.get('id');
 const idx=PROJECTS.findIndex(p=>p.id===id);
 const p=PROJECTS[idx];
+
+const toAnchorId=(title, i)=>
+  `section-${i+1}-${title.toLowerCase().replace(/[^a-z0-9가-힣]+/g,'-').replace(/(^-|-$)/g,'')}`;
+
+const GROUP_ORDER = [
+  { key: 'overview', title: '프로젝트 개요' },
+  { key: 'role', title: '담당 역할' },
+  { key: 'outcome', title: '프로젝트 성과' }
+];
+
+function detectGroup(title) {
+  if (/(성과|수상|발표|연구|성능|결과)/.test(title)) return 'outcome';
+  if (/(담당|역할|구현|개발|구성|분석|파이프라인|모니터링|테스트베드|프로토콜 확장)/.test(title)) return 'role';
+  return 'overview';
+}
 
 if(!p){
   document.getElementById('proj-content').innerHTML='<p style="color:var(--text-4)">프로젝트를 찾을 수 없습니다.</p>';
 }else{
   document.title=`${p.title} — 류기현 (Jeff)`;
   const bc=catClass[p.category]||'back';
-  const sections=p.detail.sections.map(s=>`
-    <div class="proj-section">
-      <h3>${s.title}</h3>
-      ${s.content}
+  const sectionMeta=(p.detail.sections || []).map((s,i)=>({
+    ...s,
+    anchor: toAnchorId(s.title, i),
+    group: s.group || detectGroup(s.title)
+  }));
+
+  const grouped = GROUP_ORDER.map(g => ({
+    ...g,
+    items: sectionMeta.filter(s => s.group === g.key)
+  })).filter(g => g.items.length > 0);
+
+  const groupsHtml=grouped.map(g=>`
+    <div class="proj-group" id="group-${g.key}">
+      <h2>${g.title}</h2>
+      <div class="proj-group-card">
+        ${g.items.map(s=>`
+          <div class="proj-section proj-subsection" id="${s.anchor}">
+            <h3>${s.title}</h3>
+            ${s.content}
+          </div>`).join('')}
+      </div>
     </div>`).join('');
 
   document.getElementById('proj-content').innerHTML=`
@@ -119,17 +173,27 @@ if(!p){
       <div class="proj-stack">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>
     </div>
     <div class="proj-overview">${p.detail.overview}</div>
-    ${sections}`;
+    ${groupsHtml}`;
+
+  const toc=document.getElementById('proj-toc');
+  const tocLinks=document.getElementById('proj-toc-links');
+  if(grouped.length){
+    toc.style.display='block';
+    tocLinks.innerHTML=grouped.map(g=>`
+      <a class="toc-link" href="#group-${g.key}">${g.title}</a>
+      ${g.items.map(s=>`<a class="toc-link sub" href="#${s.anchor}">${s.title}</a>`).join('')}
+    `).join('');
+  }
 
   if(idx>0){
     const prev=document.getElementById('prev-proj');
-    prev.href=`${PROJECTS[idx-1].id}.html`;
+    prev.href=`project.html?id=${encodeURIComponent(PROJECTS[idx-1].id)}`;
     prev.textContent=`← ${PROJECTS[idx-1].title.substring(0,22)}...`;
     prev.style.visibility='visible';
   }
   if(idx<PROJECTS.length-1){
     const next=document.getElementById('next-proj');
-    next.href=`${PROJECTS[idx+1].id}.html`;
+    next.href=`project.html?id=${encodeURIComponent(PROJECTS[idx+1].id)}`;
     next.textContent=`${PROJECTS[idx+1].title.substring(0,22)}... →`;
     next.style.visibility='visible';
   }

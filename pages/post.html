@@ -27,6 +27,12 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .nav-contact-btn:hover{background:var(--green-dk);color:#fff}
 
 .page{max-width:740px;margin:0 auto;padding:2.5rem 5% 5rem}
+.layout{display:grid;grid-template-columns:220px 1fr;gap:1.2rem;align-items:start}
+.toc{position:sticky;top:76px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.9rem 0.85rem}
+.toc-title{font-size:0.72rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.55rem}
+.toc-links{display:flex;flex-direction:column;gap:0.3rem}
+.toc-link{font-size:0.78rem;color:var(--text-3);line-height:1.4;padding:0.2rem 0.25rem;border-radius:6px}
+.toc-link:hover{background:var(--green-lt);color:var(--green)}
 
 .back-link{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-3);margin-bottom:2rem;transition:color .15s}
 .back-link:hover{color:var(--green)}
@@ -41,8 +47,8 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .post-header h1{font-size:1.5rem;font-weight:700;color:var(--text);line-height:1.35;letter-spacing:-0.02em;margin-bottom:1rem}
 .post-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
 .post-tag{font-size:0.7rem;color:var(--text-4);padding:0.15rem 0.55rem;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+.post-overview{background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:1.1rem 1.3rem;margin-bottom:2rem;font-size:0.87rem;line-height:1.8;color:var(--text-2);font-weight:300}
 
-/* 본문 */
 .post-body{line-height:1.85;color:var(--text-2)}
 .post-body h3{font-size:1rem;font-weight:600;color:var(--text);margin:1.8rem 0 0.8rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
 .post-body p{font-size:0.88rem;margin-bottom:0.9rem;font-weight:300}
@@ -63,6 +69,7 @@ footer{border-top:1px solid var(--border);margin-top:3rem;padding:1.5rem 5%;disp
 footer p{font-size:0.73rem;color:var(--text-4)}
 footer a{color:var(--green);font-weight:500}
 
+@media(max-width:860px){.layout{grid-template-columns:1fr}.toc{position:static}}
 @media(max-width:560px){nav{padding:0 4%}.page{padding:1.5rem 4% 4rem}}
 </style>
 </head>
@@ -80,11 +87,19 @@ footer a{color:var(--green);font-weight:500}
 
 <div class="page">
   <a class="back-link" href="../blog.html">← Blog 목록으로</a>
-  <div id="post-content"><p style="color:var(--text-4);font-size:0.85rem">로딩 중...</p></div>
-  <div class="post-nav">
-    <a id="prev-post" href="#" class="post-nav-btn" style="visibility:hidden">← 이전 포스트</a>
-    <a href="../blog.html" style="font-size:0.78rem;color:var(--text-3)">목록</a>
-    <a id="next-post" href="#" class="post-nav-btn" style="visibility:hidden;text-align:right">다음 포스트 →</a>
+  <div class="layout">
+    <aside class="toc" id="post-toc" style="display:none">
+      <div class="toc-title">Contents</div>
+      <div class="toc-links" id="post-toc-links"></div>
+    </aside>
+    <div>
+      <div id="post-content"><p style="color:var(--text-4);font-size:0.85rem">로딩 중...</p></div>
+      <div class="post-nav">
+        <a id="prev-post" href="#" class="post-nav-btn" style="visibility:hidden">← 이전 포스트</a>
+        <a href="../blog.html" style="font-size:0.78rem;color:var(--text-3)">목록</a>
+        <a id="next-post" href="#" class="post-nav-btn" style="visibility:hidden;text-align:right">다음 포스트 →</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -93,19 +108,22 @@ footer a{color:var(--green);font-weight:500}
   <p>Built with vanilla HTML · CSS · JS</p>
 </footer>
 
-<script src="../assets/js/data.js"></script>
+<script src="../assets/js/data/common.js"></script>
+<script src="../assets/js/data/blog.js"></script>
 <script>
 const postCatCls={Security:'sec',Backend:'back',IaC:'iac',Network:''};
-const BLOG_POST_ID='vlan-trunking-lab';
-const id=BLOG_POST_ID;
-const idx=BLOG_POSTS.findIndex(p=>p.id===id);
+const params=new URLSearchParams(location.search);
+const title=params.get('title');
+const idx=BLOG_POSTS.findIndex(p=>p.title===title);
 const post=BLOG_POSTS[idx];
+const toAnchorId=(sTitle, i)=>`section-${i+1}-${sTitle.toLowerCase().replace(/[^a-z0-9가-힣]+/g,'-').replace(/(^-|-$)/g,'')}`;
 
 if(!post){
   document.getElementById('post-content').innerHTML='<p style="color:var(--text-4)">포스트를 찾을 수 없습니다.</p>';
 }else{
   document.title=`${post.title} — 류기현 (Jeff)`;
   const cc=postCatCls[post.category]||'';
+  const sections=(post.detail && post.detail.sections ? post.detail.sections : [{ title: '본문', content: post.content || '' }]).map((s,i)=>({ ...s, anchor: toAnchorId(s.title, i) }));
   document.getElementById('post-content').innerHTML=`
     <div class="post-header">
       <div class="post-header-meta">
@@ -115,17 +133,25 @@ if(!post){
       <h1>${post.title}</h1>
       <div class="post-tags">${post.tags.map(t=>`<span class="post-tag">#${t}</span>`).join('')}</div>
     </div>
-    <div class="post-body">${post.content}</div>`;
+    ${post.detail && post.detail.overview ? `<div class="post-overview">${post.detail.overview}</div>` : ''}
+    <div class="post-body">${sections.map(s=>`<div class="proj-section" id="${s.anchor}"><h3>${s.title}</h3>${s.content}</div>`).join('')}</div>`;
+
+  const toc=document.getElementById('post-toc');
+  const tocLinks=document.getElementById('post-toc-links');
+  if(sections.length){
+    toc.style.display='block';
+    tocLinks.innerHTML=sections.map(s=>`<a class="toc-link" href="#${s.anchor}">${s.title}</a>`).join('');
+  }
 
   if(idx<BLOG_POSTS.length-1){
     const p=document.getElementById('prev-post');
-    p.href=`${BLOG_POSTS[idx+1].id}.html`;
+    p.href=`post.html?title=${encodeURIComponent(BLOG_POSTS[idx+1].title)}`;
     p.textContent=`← ${BLOG_POSTS[idx+1].title.substring(0,22)}...`;
     p.style.visibility='visible';
   }
   if(idx>0){
     const n=document.getElementById('next-post');
-    n.href=`${BLOG_POSTS[idx-1].id}.html`;
+    n.href=`post.html?title=${encodeURIComponent(BLOG_POSTS[idx-1].title)}`;
     n.textContent=`${BLOG_POSTS[idx-1].title.substring(0,22)}... →`;
     n.style.visibility='visible';
   }

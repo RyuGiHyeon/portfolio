@@ -98,7 +98,8 @@ footer a{color:var(--green);font-weight:500}
   <p>Built with vanilla HTML · CSS · JS</p>
 </footer>
 
-<script src="assets/js/data.js"></script>
+<script src="assets/js/data/common.js"></script>
+<script src="assets/js/data/blog.js"></script>
 <script>
 const postCatCls={Security:'sec',Backend:'back',IaC:'iac',Network:''};
 const filterBar=document.getElementById('filter-bar');
@@ -111,14 +112,14 @@ cats.forEach(cat=>{
 });
 
 function renderPosts(cat){
-  const filtered=cat==='ALL'?BLOG_POSTS:BLOG_POSTS.filter(p=>p.category===cat);
+  const filtered=cat==='ALL'?[...BLOG_POSTS].reverse():BLOG_POSTS.filter(p=>p.category===cat).reverse();
   if(!filtered.length){
     postsWrap.innerHTML='<div class="empty-state">아직 포스트가 없습니다.</div>';
     return;
   }
   postsWrap.innerHTML=filtered.map(post=>{
     const cc=postCatCls[post.category]||'';
-    return `<a class="post-card" href="blog/${post.id}.html">
+    return `<a class="post-card" href="pages/post.html?title=${encodeURIComponent(post.title)}">
       <div class="post-meta">
         <span class="post-cat ${cc}">${post.category}</span>
         <span class="post-date">${post.date}</span>

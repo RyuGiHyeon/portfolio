@@ -193,11 +193,7 @@ footer a{color:var(--green);font-weight:500}
 
       <div class="journey-card">
         <div class="card-title">🗺️ Career Journey</div>
-        <div class="journey-item"><div class="j-dot d-green"></div><div><div class="j-label">IaC 부트캠프</div><div class="j-sub">2026.02 — · 메가스터디IT아카데미</div></div></div>
-        <div class="journey-item"><div class="j-dot d-purple"></div><div><div class="j-label">BoB 14기</div><div class="j-sub">2025.07 — 2026.02 · 보안제품개발트랙</div></div></div>
-        <div class="journey-item"><div class="j-dot d-red"></div><div><div class="j-label">정보보안동아리 Unknown</div><div class="j-sub">2025.02 — 2026.02 · OWSAP TOP 10</div></div></div>
-        <div class="journey-item"><div class="j-dot d-orange"></div><div><div class="j-label">Backend 개발</div><div class="j-sub">2023 — 2025 · Spring Boot / JPA</div></div></div>
-        <div class="journey-item"><div class="j-dot d-blue"></div><div><div class="j-label">울산대학교 입학</div><div class="j-sub">2020 · IT융합전공</div></div></div>
+        <div id="journey-list"></div>
       </div>
     </aside>
 
@@ -260,16 +256,32 @@ footer a{color:var(--green);font-weight:500}
   <p>Built with vanilla HTML · CSS · JS</p>
 </footer>
 
-<script src="assets/js/data.js"></script>
+<script src="assets/js/data/common.js"></script>
+<script src="assets/js/data/projects.js"></script>
+<script src="assets/js/data/blog.js"></script>
 <script>
 const catClass={Security:'sec',Backend:'back',Network:'net',DevOps:'ops',Container:'ops'};
 const postCatCls={Security:'sec',Backend:'back',IaC:'iac',Network:''};
 
+// Career Journey
+const journeyList=document.getElementById('journey-list');
+const journeyDotClasses=['d-green','d-purple','d-red','d-orange','d-blue'];
+[...CAREER_JOURNEY].reverse().forEach((item,i)=>{
+  const dotClass=journeyDotClasses[i % journeyDotClasses.length];
+  journeyList.innerHTML+=`<div class="journey-item">
+    <div class="j-dot ${dotClass}"></div>
+    <div>
+      <div class="j-label">${item.label}</div>
+      <div class="j-sub">${item.sub}</div>
+    </div>
+  </div>`;
+});
+
 // Projects
 const pFeed=document.getElementById('projects-feed');
-PROJECTS.forEach(p=>{
+[...PROJECTS].reverse().forEach(p=>{
   const bc=catClass[p.category]||'back';
-  pFeed.innerHTML+=`<a class="proj-card" href="projects/${p.id}.html">
+  pFeed.innerHTML+=`<a class="proj-card" href="pages/project.html?id=${encodeURIComponent(p.id)}">
     <div class="proj-header"><div class="proj-title">${p.title}</div><span class="proj-badge pb-${bc}">${p.category}</span></div>
     <div class="proj-meta">${p.date}</div>
     <div class="proj-desc">${p.summary}</div>
@@ -279,9 +291,9 @@ PROJECTS.forEach(p=>{
 
 // Blog
 const bFeed=document.getElementById('blog-feed');
-BLOG_POSTS.slice(0,3).forEach(post=>{
+[...BLOG_POSTS].slice(-3).reverse().forEach(post=>{
   const cc=postCatCls[post.category]||'';
-  bFeed.innerHTML+=`<a class="post-card" href="blog/${post.id}.html">
+  bFeed.innerHTML+=`<a class="post-card" href="pages/post.html?title=${encodeURIComponent(post.title)}">
     <div class="post-meta"><span class="post-cat ${cc}">${post.category}</span><span class="post-date">${post.date}</span></div>
     <div class="post-title">${post.title}</div>
     <div class="post-desc">${post.summary}</div>
@@ -291,8 +303,9 @@ BLOG_POSTS.slice(0,3).forEach(post=>{
 
 // Education
 const eduList=document.getElementById('edu-list');
-EDUCATION.forEach((e,i)=>{
-  const last=i===EDUCATION.length-1;
+const eduItems=[...EDUCATION].reverse();
+eduItems.forEach((e,i)=>{
+  const last=i===eduItems.length-1;
   eduList.innerHTML+=`<div class="edu-item" style="${last?'border-bottom:none':''}">
     <div style="font-size:1.2rem;flex-shrink:0">🎓</div>
     <div>
@@ -307,15 +320,25 @@ EDUCATION.forEach((e,i)=>{
 
 // Certifications
 const certList=document.getElementById('cert-list');
-CERTIFICATIONS.forEach((c,i)=>{
-  const last=i===CERTIFICATIONS.length-1;
-  const sl={active:'취득 완료',studying:'준비 중',expired:'만료'}[c.status];
-  const sc=c.status==='active'?'cs-active':'cs-studying';
+const certItems=[...CERTIFICATIONS].reverse();
+const certStatusLabelMap={active:'취득',studying:'준비 중',expired:'만료',취득:'취득','준비 중':'준비 중',만료:'만료'};
+const certStatusClassMap={active:'cs-active',studying:'cs-studying',expired:'cs-studying',취득:'cs-active','준비 중':'cs-studying',만료:'cs-studying'};
+const formatCertDate=(raw)=>{
+  const s=String(raw||'').replace(/[^0-9]/g,'');
+  if(s.length===8) return `${s.slice(0,4)}.${s.slice(4,6)}.${s.slice(6,8)}`;
+  return raw||'';
+};
+certItems.forEach((c,i)=>{
+  const last=i===certItems.length-1;
+  const sl=certStatusLabelMap[c.status]||String(c.status||'');
+  const sc=certStatusClassMap[c.status]||'cs-studying';
+  const nameLine=c.fullName?`${c.name} · ${c.fullName}`:c.name;
   certList.innerHTML+=`<div class="cred-item" style="${last?'border-bottom:none':''}">
     <div class="cred-icon">📜</div>
     <div>
-      <div class="cred-name">${c.name} · ${c.fullName}</div>
-      <div class="cred-sub">${c.issuer} · ${c.date}</div>
+      <div class="cred-name">${nameLine}</div>
+      <div class="cred-sub">${c.issuer} · ${formatCertDate(c.date)}</div>
+      ${c.credentialId?`<div class="cred-sub">ID · ${c.credentialId}</div>`:''}
       <span class="cred-status ${sc}">${sl}</span>
     </div>
   </div>`;
@@ -325,7 +348,7 @@ CERTIFICATIONS.forEach((c,i)=>{
 const aIcon={award:'🏆',security:'🔍',activity:'📌',volunteer:'🤝'};
 function renderAwardSection(elId, type){
   const el=document.getElementById(elId);
-  const items=AWARDS.filter(a=>a.type===type);
+  const items=AWARDS.filter(a=>a.type===type).reverse();
   if(!items.length){el.innerHTML='<p style="font-size:0.82rem;color:var(--text-4);padding:0.2rem 0">항목 없음</p>';return;}
   el.innerHTML=items.map((a,i)=>{
     const last=i===items.length-1;
