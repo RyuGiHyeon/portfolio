@@ -48,6 +48,12 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .proj-date{font-size:0.73rem;color:var(--text-4);margin-bottom:0.9rem}
 .proj-stack{display:flex;flex-wrap:wrap;gap:0.4rem}
 .proj-stack span{font-size:0.68rem;padding:0.18rem 0.6rem;border-radius:8px;background:var(--bg);color:var(--text-2);border:1px solid var(--border)}
+.proj-github{margin-bottom:1.8rem;border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:1rem}
+.proj-github h3{font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:0.6rem;padding-bottom:0.55rem;border-bottom:1px solid var(--border)}
+.proj-github ul{list-style:none;display:flex;flex-direction:column;gap:0.45rem;padding-left:0}
+.proj-github li{position:relative;padding-left:0.9rem;font-size:0.87rem;color:var(--text-2);font-weight:300;line-height:1.6}
+.proj-github li::before{content:'·';position:absolute;left:0;top:0;color:var(--green);font-size:1rem}
+.proj-github a{color:var(--green)}
 
 .proj-overview{background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:1.1rem 1.3rem;margin-bottom:2rem;font-size:0.87rem;line-height:1.8;color:var(--text-2);font-weight:300}
 .proj-section{margin-bottom:1.8rem}
@@ -138,7 +144,7 @@ footer a{color:var(--green);font-weight:500}
 <script src="../assets/js/data/common.js"></script>
 <script src="../assets/js/data/projects.js"></script>
 <script>
-const catClass={Security:'sec',Backend:'back',Network:'net',DevOps:'ops',Container:'ops'};
+const catClass={Security:'sec',Backend:'back',Network:'net',DevOps:'ops',DevSecOps:'ops',Container:'ops'};
 const params=new URLSearchParams(location.search);
 const title=params.get('title');
 const idx=PROJECTS.findIndex(p=>p.title===title);
@@ -166,11 +172,41 @@ function detectGroup(title) {
   return 'overview';
 }
 
+function resolveGithubLinks(project) {
+  const github = project.githubLinks || project.github;
+  if (!github) return [];
+  if (Array.isArray(github)) {
+    return github.map((v, i) => {
+      if (typeof v === 'string') return { label: `GitHub ${i + 1}`, url: v };
+      if (v && typeof v.url === 'string') return { label: v.label || `GitHub ${i + 1}`, url: v.url };
+      return null;
+    }).filter(Boolean);
+  }
+  if (typeof github === 'string') return [{ label: 'GitHub', url: github }];
+  if (typeof github === 'object') {
+    return Object.keys(github).map(k => ({ label: k || 'GitHub', url: github[k] })).filter(v => typeof v.url === 'string');
+  }
+  return [];
+}
+
+function getProjectCategories(project) {
+  const raw = project.categories ?? project.category;
+  if (Array.isArray(raw)) {
+    return raw.map(v => {
+      if (typeof v === 'string') return v;
+      if (v && typeof v.label === 'string') return v.label;
+      return '';
+    }).filter(Boolean);
+  }
+  if (typeof raw === 'string') return [raw];
+  return [];
+}
+
 if(!p){
   document.getElementById('proj-content').innerHTML='<p style="color:var(--text-4)">프로젝트를 찾을 수 없습니다.</p>';
 }else{
   document.title=`${p.title} — 류기현 (Jeff)`;
-  const bc=catClass[p.category]||'back';
+  const badgesHtml=getProjectCategories(p).map(c=>`<span class="proj-badge pb-${catClass[c]||'back'}">${c}</span>`).join('');
   const sectionMeta=(p.detail.sections || []).map((s,i)=>({
     ...s,
     anchor: toAnchorId(s.title, i),
@@ -193,15 +229,20 @@ if(!p){
           </div>`).join('')}
       </div>
     </div>`).join('');
+  const githubLinks=resolveGithubLinks(p).map(g=>{
+    const cleanUrl=String(g.url).replace(/^https?:\/\//,'').replace(/\/$/,'');
+    return `<li><a href="${g.url}" target="_blank" rel="noopener noreferrer">${g.label} — ${cleanUrl}</a></li>`;
+  }).join('');
 
   document.getElementById('proj-content').innerHTML=`
     <div class="proj-header">
-      <span class="proj-badge pb-${bc}">${p.category}</span>
+      ${badgesHtml}
       <h1>${p.title}</h1>
       <div class="proj-date">${p.date}</div>
       <div class="proj-stack">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>
     </div>
     <div class="proj-overview">${p.detail.overview}</div>
+    ${githubLinks ? `<div class="proj-github"><h3>GitHub</h3><ul>${githubLinks}</ul></div>` : ''}
     ${groupsHtml}`;
 
   const toc=document.getElementById('proj-toc');

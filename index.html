@@ -89,6 +89,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .proj-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-2px);border-color:#dee2e6}
 .proj-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.45rem;gap:0.8rem}
 .proj-title{font-size:0.95rem;font-weight:600;color:var(--text);line-height:1.35;letter-spacing:-0.01em}
+.proj-badges{display:flex;flex-wrap:wrap;gap:0.35rem;justify-content:flex-end}
 .proj-badge{font-size:0.62rem;padding:0.15rem 0.55rem;border-radius:8px;font-weight:600;white-space:nowrap;flex-shrink:0}
 .pb-sec{background:#fff0f6;color:#c2255c}
 .pb-back{background:#edf2ff;color:#4c6ef5}
@@ -98,6 +99,8 @@ nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1p
 .proj-desc{font-size:0.81rem;color:var(--text-3);line-height:1.6;font-weight:300;margin-bottom:0.8rem}
 .proj-stack{display:flex;flex-wrap:wrap;gap:0.35rem}
 .proj-stack span{font-size:0.67rem;padding:0.18rem 0.55rem;border-radius:8px;background:var(--bg);color:var(--text-2);border:1px solid var(--border)}
+.proj-links{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.55rem}
+.proj-link{font-size:0.67rem;padding:0.16rem 0.55rem;border-radius:8px;background:var(--green-lt);color:var(--green);border:1px solid rgba(18,184,134,.28)}
 
 /* Cred card */
 .cred-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem}
@@ -238,8 +241,36 @@ footer a{color:var(--green);font-weight:500}
 <script src="assets/js/data/projects.js"></script>
 <script src="assets/js/data/blog.js"></script>
 <script>
-const catClass={Security:'sec',Backend:'back',Network:'net',DevOps:'ops',Container:'ops'};
+const catClass={Security:'sec',Backend:'back',Network:'net',DevOps:'ops',DevSecOps:'ops',Container:'ops'};
 const postCatCls={Security:'sec',Backend:'back',IaC:'iac',Network:''};
+const resolveGithubLinks=(project)=>{
+  const github=project.githubLinks||project.github;
+  if(!github)return [];
+  if(Array.isArray(github)){
+    return github.map((v,i)=>{
+      if(typeof v==='string')return {label:`GitHub ${i+1}`,url:v};
+      if(v&&typeof v.url==='string')return {label:v.label||`GitHub ${i+1}`,url:v.url};
+      return null;
+    }).filter(Boolean);
+  }
+  if(typeof github==='string')return [{label:'GitHub',url:github}];
+  if(typeof github==='object'){
+    return Object.keys(github).map(k=>({label:k||'GitHub',url:github[k]})).filter(v=>typeof v.url==='string');
+  }
+  return [];
+};
+const getProjectCategories=(project)=>{
+  const raw=project.categories ?? project.category;
+  if(Array.isArray(raw)){
+    return raw.map(v=>{
+      if(typeof v==='string') return v;
+      if(v&&typeof v.label==='string') return v.label;
+      return '';
+    }).filter(Boolean);
+  }
+  if(typeof raw==='string') return [raw];
+  return [];
+};
 
 // Profile Tags
 const profileTagsEl=document.getElementById('profile-tags');
@@ -271,12 +302,15 @@ const journeyDotClasses=['d-green','d-purple','d-red','d-orange','d-blue'];
 // Projects
 const pFeed=document.getElementById('projects-feed');
 [...PROJECTS].reverse().forEach(p=>{
-  const bc=catClass[p.category]||'back';
+  const cats=getProjectCategories(p);
+  const badgeHtml=cats.map(c=>`<span class="proj-badge pb-${catClass[c]||'back'}">${c}</span>`).join('');
+  const gh=resolveGithubLinks(p).map(g=>`<span class="proj-link">${g.label}</span>`).join('');
   pFeed.innerHTML+=`<a class="proj-card" href="pages/project.html?title=${encodeURIComponent(p.title)}">
-    <div class="proj-header"><div class="proj-title">${p.title}</div><span class="proj-badge pb-${bc}">${p.category}</span></div>
+    <div class="proj-header"><div class="proj-title">${p.title}</div><div class="proj-badges">${badgeHtml}</div></div>
     <div class="proj-meta">${p.date}</div>
     <div class="proj-desc">${p.summary}</div>
     <div class="proj-stack">${p.stack.map(s=>`<span>${s}</span>`).join('')}</div>
+    ${gh?`<div class="proj-links">${gh}</div>`:''}
   </a>`;
 });
 

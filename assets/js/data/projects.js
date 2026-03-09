@@ -27,8 +27,8 @@ var PROJECTS_RAW = [
   },
   {
     "sortKey": 20250701,
-    "title": "CLASSUM 취약점 제보 - 수정 필요",
-    "summary": "교육 플랫폼 CLASSUM의 보안 취약점을 발견하고 공식 제보. 책임감 있는 취약점 공개(Responsible Disclosure) 프로세스 경험.",
+    "title": "CLASSUM 취약점 제보",
+    "summary": "CLASSUM SSO 연동에서 인증 토큰 재사용(Replay) 가능한 치명 취약점을 발견하고, 재현·분석·공식 제보한 보안 리서치.",
     "stack": [
       "Vulnerability Research",
       "Burp Suite",
@@ -37,15 +37,32 @@ var PROJECTS_RAW = [
     "category": "Security",
     "date": "2025",
     "detail": {
-      "overview": "교육 플랫폼 CLASSUM에서 보안 취약점을 발견하고 책임감 있는 취약점 공개(Responsible Disclosure) 프로세스에 따라 공식 제보했습니다.",
+      "overview": "울산대학교-CLASSUM SSO 연동 과정에서 URL Query String으로 노출된 인증 토큰이 재사용 가능한 취약점(CWE-598, CWE-294)을 확인했습니다. 토큰 탈취 시 별도 인증 없이 계정 로그인이 가능해 계정 탈취로 이어질 수 있는 Critical 이슈로 판단해 Responsible Disclosure 방식으로 제보했습니다.",
       "sections": [
         {
-          "title": "과정",
-          "content": "<ul><li>서비스 이용 중 비정상적인 동작 패턴 발견</li><li>Burp Suite를 활용한 HTTP 트래픽 분석</li><li>취약점 재현 및 영향도 분석</li><li>CLASSUM 보안팀에 공식 제보</li></ul>"
+          "title": "프로젝트 개요",
+          "group": "overview",
+          "content": "<ul><li>대상: CLASSUM SSO 로그인 연동 구간</li><li>취약점: URL 파라미터 인증 토큰 노출 + 재전송(Replay) 가능</li><li>위험도: <b>Critical</b></li><li>관련 CWE: <b>CWE-598</b>, <b>CWE-294</b></li><li>제보 일자: 2025.12.04</li></ul>"
         },
         {
-          "title": "배운 점",
-          "content": "<ul><li>실제 서비스의 취약점 발견 및 Responsible Disclosure 프로세스 경험</li><li>취약점 보고서 작성 방법 습득</li></ul>"
+          "title": "담당 역할",
+          "group": "role",
+          "content": "<ul><li>SSO 로그인 흐름 분석 및 토큰 전달 구조 확인</li><li>다중 디바이스(PC A/B) 기반 재현 시나리오 설계</li><li>토큰 재사용에 따른 세션 하이재킹 가능성 검증</li><li>영향도·재현 절차·권고안을 포함한 취약점 진단 보고서 작성</li><li>보안팀(privacy@classum.com) 대상 Responsible Disclosure 수행</li></ul>"
+        },
+        {
+          "title": "재현 및 검증",
+          "group": "role",
+          "content": "<ul><li>Step 1. 정상 사용자 로그인 후 URL 토큰 확보 (PC A)</li><li>Step 2. 제3자 환경(PC B/시크릿 모드)에서 동일 URL 재사용</li><li>Step 3. 추가 인증 없이 피해자 계정 로그인 확인</li><li>PoC 영상: <a href=\"https://youtu.be/lZSdI309jgw\" target=\"_blank\" style=\"color:#12b886\">https://youtu.be/lZSdI309jgw</a></li></ul>"
+        },
+        {
+          "title": "프로젝트 성과",
+          "group": "outcome",
+          "content": "<ul><li>실서비스 SSO 연동의 치명 취약점 식별 및 재현 성공</li><li>계정 탈취(ATO)·개인정보 유출·2차 피해 가능성 입증</li><li>단기/장기 보안 권고안 제시: 토큰 1회성/TTL 최소화, OAuth2/OIDC Authorization Code Flow 권장</li><li>실무형 취약점 보고서 작성 및 공식 제보 경험 확보</li></ul>"
+        },
+        {
+          "title": "벤더 회신 결과",
+          "group": "outcome",
+          "content": "<p>벤더 측 회신 메일 첨부입니다.</p><div style=\"margin-top:10px\"><img src=\"../assets/projects/20251204_classum/vendor-mail.png\" style=\"width:100%;border-radius:8px\"><p style=\"font-size:12px;color:#999;margin-top:6px\">CLASSUM 보안팀 회신 메일 (첨부 이미지)</p></div>"
         }
       ]
     }
@@ -129,28 +146,102 @@ var PROJECTS_RAW = [
   },
   {
     "sortKey": 20241201,
-    "title": "알림IT - 수정 필요",
-    "summary": "울산대학교 학부 공지사항 알람 제공 어플",
+    "title": "알림IT — 울산대학교 공지 알림 서비스",
+    "summary": "울산대학교 학과별 공지사항을 통합 수집하여 Android / iOS 앱으로 실시간 알림을 제공하는 서비스. 백엔드 개발과 온프레미스 서버 인프라 구축 및 운영을 담당했습니다.",
     "stack": [
+      "Java",
       "Spring Boot",
-      "SQLi",
-      "XSS",
-      "CSRF",
-      "Linux"
+      "JPA",
+      "MySQL",
+      "Docker",
+      "Docker Compose",
+      "Nginx",
+      "GitHub Actions",
+      "Tailscale",
+      "Firebase FCM",
+      "Jsoup",
+      "Linux",
+      "iptables",
+      "Fail2ban"
+    ],
+    "github": [
+      { "label": "Organization", "url": "https://github.com/AlarmU-Ulsan" },
+      { "label": "Backend", "url": "https://github.com/AlarmU-Ulsan/Backend" }
     ],
     "category": "Backend",
-    "date": "2024.12 — ",
+    "categories": ["Backend", "DevSecOps"],
+    "date": "2024.12 — 운영 중",
     "detail": {
-      "overview": "울산대학교 학부 공지사항 알람 제공 어플",
+      "overview": "알림IT는 울산대학교 학과별로 분산된 공지사항을 자동 수집하여 Android / iOS 앱으로 실시간 알림을 제공하는 서비스입니다. Spring Boot 기반 백엔드를 개발하고, Docker 기반 온프레미스 서버 환경에서 서비스를 운영하며 CI/CD 자동화와 서버 보안 체계를 직접 구축했습니다.",
+
       "sections": [
+
         {
-          "title": "분석 항목",
-          "content": "<ul><li>A01 Broken Access Control — 권한 검증 우회 실습</li><li>A02 Cryptographic Failures — 취약한 암호화 탐지</li><li>A03 Injection — SQL Injection, Command Injection</li><li>A07 XSS — Reflected / Stored / DOM-based 유형별 분석</li><li>A08 SSRF — 내부망 접근 시나리오 실습</li></ul>"
+          "title": "프로젝트 개요",
+          "group": "overview",
+          "content": "<ul><li>울산대학교 학과별 공지사항을 자동 수집하여 모바일 앱으로 실시간 알림 제공</li><li>Android / iOS 사용자 대상 실제 운영 중인 서비스</li><li>Spring Boot 기반 백엔드 및 온프레미스 서버 인프라 직접 구축</li><li>GitHub Actions 기반 CI/CD 자동 배포 환경 구축</li></ul>"
         },
+
         {
-          "title": "대응 방안 정리",
-          "content": "<ul><li>각 취약점별 Secure Coding 가이드라인 문서화</li><li>취약한 코드 vs 안전한 코드 비교 정리</li><li>WAF·보안 헤더·입력값 검증 등 방어 레이어 구성 방법 정리</li></ul>"
+          "title": "담당 역할",
+          "group": "role",
+          "content": "<ul><li>Spring Boot 기반 REST API 설계 및 구현</li><li>Docker / Nginx 기반 온프레미스 서버 인프라 구축</li><li>GitHub Actions 기반 CI/CD 파이프라인 설계 및 운영</li><li>서버 보안 설정 및 침입 대응 체계 구축</li><li>서비스 운영 중 발생하는 장애 및 성능 이슈 대응</li></ul>"
+        },
+
+        {
+          "title": "시스템 아키텍처",
+          "group": "overview",
+          "content": "<ul><li>Client(Android / iOS / Admin) → Nginx Reverse Proxy → Spring Boot API</li><li>Spring Boot ↔ MySQL (공지 / 사용자 / 토큰 데이터)</li><li>Spring Boot ↔ Firebase Cloud Messaging (푸시 알림)</li><li>GitHub Actions 기반 Docker 이미지 빌드 및 자동 배포</li><li>Tailscale VPN을 통한 내부망 서버 배포</li></ul>"
+        },
+
+        {
+          "title": "공지 크롤링 및 알림 시스템",
+          "group": "role",
+          "content": "<ul><li>Jsoup 기반 학과 공지사항 자동 크롤링</li><li>평일 업무시간(08~18시) 기준 10분 간격 신규 공지 수집</li><li>공지 등록 시 Firebase Cloud Messaging 기반 푸시 알림 전송</li><li>sendEachForMulticast 기반 대량 알림 처리 최적화</li><li>전송 실패 토큰 자동 정리 로직 구현</li></ul>"
+        },
+
+        {
+          "title": "DevOps 및 배포 자동화",
+          "group": "role",
+          "content": "<ul><li>Git Tag 기반 자동 배포 파이프라인 구축</li><li>GitHub Actions → Docker Image Build → Docker Hub Push</li><li>Tailscale VPN 기반 내부망 서버 SSH 배포</li><li>docker-compose 기반 컨테이너 자동 재배포</li><li>배포 자동화를 통해 운영 리스크 및 휴먼에러 감소</li></ul>"
+        },
+
+        {
+          "title": "온프레미스 서버 운영",
+          "group": "role",
+          "content": "<ul><li>Ubuntu 기반 온프레미스 서버 환경에서 서비스 운영</li><li>Docker Compose 기반 서비스 분리 (Spring Boot / MySQL / Nginx)</li><li>Nginx Reverse Proxy를 통해 외부 접속 관리</li><li>교내 네트워크 정책에 따라 외부 포트가 기본 차단된 환경에서 서비스 운영</li><li>서비스 운영을 위해 80 / 443 포트 개방 요청 후 운영</li></ul>"
+        },
+
+        {
+          "title": "네트워크 보안 설계",
+          "group": "role",
+          "content": "<ul><li>SSH 포트 변경(22 → ????)으로 자동화된 공격 감소</li><li>Tailscale VPN 기반 관리자 전용 접속 환경 구축</li><li>MySQL을 127.0.0.1:3306으로 바인딩하여 외부 접근 차단</li><li>iptables / ipset 기반 국가 IP 필터링 정책 적용</li><li>Docker 내부 네트워크 대역을 방화벽 허용 정책에 포함</li></ul>"
+        },
+
+        {
+          "title": "침입 탐지 및 차단",
+          "group": "role",
+          "content": "<ul><li>Fail2ban 기반 Nginx 로그 실시간 분석</li><li>/wp-admin, /autodiscover, .env 등 취약점 스캐닝 패턴 탐지</li><li>비정상 요청 발생 IP 자동 차단</li><li>공격 IP 영구 차단 정책 적용</li></ul>"
+        },
+
+        {
+          "title": "애플리케이션 보안",
+          "group": "role",
+          "content": "<ul><li>RateLimitInterceptor 기반 요청 제한 (1분 120회)</li><li>RequestLoggingInterceptor로 요청 IP / URI / 상태 코드 기록</li><li>SecurityAuditLogger 기반 보안 이벤트 로깅</li><li>애플리케이션 로그와 보안 로그 분리 설계</li></ul>"
+        },
+
+        {
+          "title": "서비스 모니터링",
+          "group": "role",
+          "content": "<ul><li>Uptime Kuma 기반 서버 상태 모니터링</li><li>라즈베리파이에 모니터링 시스템 별도 구축</li><li>서버 장애 발생 시 Discord Webhook 알림 전송</li><li>운영 중 장애 대응 시간 단축</li></ul>"
+        },
+
+        {
+          "title": "성과 및 운영 경험",
+          "group": "outcome",
+          "content": "<ul><li>코드 기여: +25,787 / -13,385 (604 file touches)</li><li>CI/CD 기반 배포 자동화 환경 구축</li><li>온프레미스 서버 환경에서 실제 서비스 안정 운영</li><li>외부 스캐닝 공격 대응 및 서버 보안 운영 경험</li><li>운영 로그 설계 및 보안 이벤트 추적 체계 구축</li></ul>"
         }
+
       ]
     }
   },
@@ -167,6 +258,9 @@ var PROJECTS_RAW = [
       "Redis",
       "Elasticsearch",
       "Docker"
+    ],
+    "github": [
+      { "label": "Organization", "url": "https://github.com/BoB14th-SLiMe" }
     ],
     "category": "Security",
     "date": "2025.09 — 2025.12",
@@ -201,12 +295,12 @@ var PROJECTS_RAW = [
         {
           "title": "산업 환경 테스트베드",
           "group": "role",
-          "content": "\n<ul>\n<li>Docker Compose 기반 <b>SCADA 1대 + PLC 4대</b> 구조의 OT 테스트베드 구축</li>\n<li>Node-RED 기반 가상 PLC / SCADA 환경 구성</li>\n<li>사거리 신호등 제어 시스템 시뮬레이션</li>\n<li><b>Modbus TCP</b> 기반 산업 통신 트래픽 생성</li>\n<li>SCADA-PLC 통신을 pcap으로 자동 수집</li>\n<li>패킷 분석 및 공격 탐지 검증 환경 구축</li>\n</ul>\n\n<div style=\"margin-top:10px\">\n<img src=\"../assets/projects/20251220_SLiMe/ot-testbed.png\" style=\"width:100%;border-radius:8px\">\n<p style=\"font-size:12px;color:#999;margin-top:6px\">\n4-Way Intersection PLC/SCADA Testbed\n</p>\n</div>\n"
+          "content": "\n<ul>\n<li>Docker Compose 기반 <b>SCADA 1대 + PLC 4대</b> 구조의 OT 테스트베드 구축</li>\n<li>Node-RED 기반 가상 PLC / SCADA 환경 구성</li>\n<li>사거리 신호등 제어 시스템 시뮬레이션</li>\n<li><b>Modbus TCP</b> 기반 산업 통신 트래픽 생성</li>\n<li>SCADA-PLC 통신을 pcap으로 자동 수집</li>\n<li>패킷 분석 및 공격 탐지 검증 환경 구축</li>\n<li><a href=\"https://github.com/BoB14th-SLiMe/testbed\" target=\"_blank\" style=\"color:#12b886\">Testbed Repository — github.com/BoB14th-SLiMe/testbed</a></li>\n</ul>\n\n<div style=\"margin-top:10px\">\n<img src=\"../assets/projects/20251220_SLiMe/ot-testbed.png\" style=\"width:100%;border-radius:8px\">\n<p style=\"font-size:12px;color:#999;margin-top:6px\">\n4-Way Intersection PLC/SCADA Testbed\n</p>\n</div>\n"
         },
         {
           "title": "C++ 파서 성능 개선",
           "group": "outcome",
-          "content": "\n<p>Wireshark 기반 파서 대신 C++ 전용 파서를 도입하여 성능과 자원 효율을 개선했습니다.</p>\n\n<ul>\n<li>실시간 처리 속도: 2.40s → 0.89s (2.7배 개선)</li>\n<li>처리량: 1,279 pps → 3,370 pps (2.6배 증가)</li>\n<li>메모리 사용: 90.98MB → 25.69MB (72% 절감)</li>\n<li>CPU 사용률: 17.9% → 9% (약 50% 감소)</li>\n</ul>\n\n<div style=\"margin-top:10px\">\n<img src=\"../assets/projects/20251220_SLiMe/ot-parser-benchmark.png\" style=\"width:100%;border-radius:8px\">\n<p style=\"font-size:12px;color:#999;margin-top:6px\">\nWireshark Parser vs C++ Parser 성능 비교\n</p>\n</div>\n"
+          "content": "\n<p>Wireshark 기반 파서 대신 C++ 전용 파서를 도입하여 성능과 자원 효율을 개선했습니다.</p>\n\n<ul>\n<li>실시간 처리 속도: 2.40s → 0.89s (2.7배 개선)</li>\n<li>처리량: 1,279 pps → 3,370 pps (2.6배 증가)</li>\n<li>메모리 사용: 90.98MB → 25.69MB (72% 절감)</li>\n<li>CPU 사용률: 17.9% → 9% (약 50% 감소)</li>\n<li><a href=\"https://github.com/BoB14th-SLiMe/Parser\" target=\"_blank\" style=\"color:#12b886\">C++ Parser Repository — github.com/BoB14th-SLiMe/Parser</a></li>\n</ul>\n\n<div style=\"margin-top:10px\">\n<img src=\"../assets/projects/20251220_SLiMe/ot-parser-benchmark.png\" style=\"width:100%;border-radius:8px\">\n<p style=\"font-size:12px;color:#999;margin-top:6px\">\nWireshark Parser vs C++ Parser 성능 비교\n</p>\n</div>\n"
         },
         {
           "title": "Wireshark 프로토콜 확장",
@@ -226,7 +320,7 @@ var PROJECTS_RAW = [
         {
           "title": "공격 모니터링 시스템",
           "group": "role",
-          "content": "\n<ul>\n<li>Elasticsearch 기반 트래픽 로그 수집 및 시각화</li>\n<li>실시간 트래픽 모니터링 및 공격 이벤트 확인</li>\n<li>트래픽 급증 패턴을 통해 DoS 공격 식별</li>\n<li>탐지 결과와 위협 설명을 함께 확인 가능한 관제 화면 구현</li>\n</ul>\n"
+          "content": "\n<ul>\n<li>Elasticsearch 기반 트래픽 로그 수집 및 시각화</li>\n<li>실시간 트래픽 모니터링 및 공격 이벤트 확인</li>\n<li>트래픽 급증 패턴을 통해 DoS 공격 식별</li>\n<li>탐지 결과와 위협 설명을 함께 확인 가능한 관제 화면 구현</li>\n<li><a href=\"https://github.com/BoB14th-SLiMe/dashboard\" target=\"_blank\" style=\"color:#12b886\">Dashboard Repository — github.com/BoB14th-SLiMe/dashboard</a></li>\n</ul>\n"
         },
         {
           "title": "프로젝트 성과",
@@ -285,4 +379,54 @@ var PROJECTS_RAW = [
     }
   }
 ];
-var PROJECTS = sortByKeyAsc(PROJECTS_RAW);
+
+function normalizeGithubLinks(github) {
+  if (!github) return [];
+  if (typeof github === "string") return [{ "label": "GitHub", "url": github }];
+  if (Array.isArray(github)) {
+    return github
+      .map(function (v, i) {
+        if (typeof v === "string") return { "label": "GitHub " + (i + 1), "url": v };
+        if (v && typeof v.url === "string") return { "label": v.label || ("GitHub " + (i + 1)), "url": v.url };
+        return null;
+      })
+      .filter(function (v) { return !!v; });
+  }
+  if (typeof github === "object") {
+    return Object.keys(github)
+      .map(function (k) { return { "label": k || "GitHub", "url": github[k] }; })
+      .filter(function (v) { return typeof v.url === "string"; });
+  }
+  return [];
+}
+
+function stripTags(html) {
+  return String(html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function extractGithubLinksFromDetail(detail) {
+  if (!detail || !Array.isArray(detail.sections)) return [];
+  var links = [];
+  detail.sections.forEach(function (section) {
+    var content = String(section && section.content || "");
+    if (!/github\.com/i.test(content)) return;
+    var re = /<a[^>]*href="([^"]*github\.com[^"]*)"[^>]*>([\s\S]*?)<\/a>/gi;
+    var m;
+    while ((m = re.exec(content)) !== null) {
+      var url = m[1];
+      var text = stripTags(m[2]);
+      var label = text ? text.split("—")[0].trim() : "GitHub";
+      links.push({ label: label || "GitHub", url: url });
+    }
+  });
+  return links;
+}
+
+var PROJECTS = sortByKeyAsc(PROJECTS_RAW).map(function (p) {
+  var direct = normalizeGithubLinks(p.github);
+  var fallback = extractGithubLinksFromDetail(p.detail);
+  var merged = (direct.length ? direct : fallback).filter(function (v, i, arr) {
+    return arr.findIndex(function (x) { return x.url === v.url; }) === i;
+  });
+  return { ...p, githubLinks: merged };
+});

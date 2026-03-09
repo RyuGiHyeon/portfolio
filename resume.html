@@ -383,6 +383,12 @@ body {
 .proj-detail-title { font-size: 7.8pt; font-weight: 700; color: var(--t1); line-height: 1.35; }
 .proj-detail-meta { font-size: 5.8pt; color: var(--t4); font-family: var(--mono); white-space: nowrap; }
 .proj-detail-overview { font-size: 6.9pt; color: var(--t3); line-height: 1.55; margin-bottom: 4px; }
+.proj-detail-github { margin: 4px 0 5px; }
+.proj-detail-github-title { font-size: 6.5pt; font-weight: 700; color: var(--t2); margin-bottom: 1px; letter-spacing: .04em; text-transform: uppercase; }
+.proj-detail-github ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.proj-detail-github li { position: relative; padding-left: 7px; font-size: 6.1pt; line-height: 1.45; }
+.proj-detail-github li::before { content: '·'; position: absolute; left: 0; top: 0; color: var(--green-dk); }
+.proj-detail-github a { color: var(--green-dk); text-decoration: none; font-size: 6.1pt; }
 .proj-detail-body { font-size: 6.8pt; color: var(--t3); line-height: 1.55; }
 .proj-detail-body h4 { font-size: 6.6pt; font-weight: 700; color: var(--t2); margin: 4px 0 2px; text-transform: uppercase; letter-spacing: .05em; }
 .proj-detail-body ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
@@ -710,17 +716,29 @@ AWARDS.filter(a => a.type === 'security').reverse().forEach(a => {
 });
 
 /* Projects */
-const catCls = { Security:'sec', Backend:'back', Network:'net' };
+const catCls = { Security:'sec', Backend:'back', Network:'net', DevOps:'back', DevSecOps:'back' };
+function getProjectCategories(project) {
+  const raw = project.categories ?? project.category;
+  if (Array.isArray(raw)) {
+    return raw.map(v => {
+      if (typeof v === 'string') return v;
+      if (v && typeof v.label === 'string') return v.label;
+      return '';
+    }).filter(Boolean);
+  }
+  if (typeof raw === 'string') return [raw];
+  return [];
+}
 const $pj = document.getElementById('projects-list');
 [...PROJECTS].reverse().forEach(p => {
-  const bc = catCls[p.category] || 'back';
-  const feat = p.category === 'Security' ? 'feat' : '';
+  const cats = getProjectCategories(p);
+  const feat = cats.includes('Security') ? 'feat' : '';
   const title = p.title;
   $pj.innerHTML += `<div class="proj ${feat}">
     <div class="proj-top">
       <span class="proj-title">${title}</span>
       <div class="proj-rt">
-        <span class="proj-cat pc-${bc}">${p.category}</span>
+        ${cats.map(c=>`<span class="proj-cat pc-${catCls[c]||'back'}">${c}</span>`).join('')}
         <span class="proj-date">${p.date}</span>
       </div>
     </div>
@@ -738,6 +756,23 @@ const $clearAll = document.getElementById('clear-all-projects');
 const $pd = document.getElementById('project-detail-list');
 const $detailPage = document.getElementById('project-detail-page');
 let selectedProjectTitles = new Set();
+
+function resolveGithubLinks(project) {
+  const github = project.githubLinks || project.github;
+  if (!github) return [];
+  if (Array.isArray(github)) {
+    return github.map((v, i) => {
+      if (typeof v === 'string') return { label: `GitHub ${i + 1}`, url: v };
+      if (v && typeof v.url === 'string') return { label: v.label || `GitHub ${i + 1}`, url: v.url };
+      return null;
+    }).filter(Boolean);
+  }
+  if (typeof github === 'string') return [{ label: 'GitHub', url: github }];
+  if (typeof github === 'object') {
+    return Object.keys(github).map(k => ({ label: k || 'GitHub', url: github[k] })).filter(v => typeof v.url === 'string');
+  }
+  return [];
+}
 
 function renderProjectPicker() {
   $pickerList.innerHTML = [...PROJECTS].reverse().map(p => `
@@ -761,6 +796,10 @@ function renderProjectDetailsForPrint() {
   $detailPage.setAttribute('aria-hidden', 'false');
   $detailPage.hidden = false;
   $pd.innerHTML = selected.map(p => {
+    const githubLinks = resolveGithubLinks(p).map(g => {
+      const clean = String(g.url).replace(/^https?:\/\//, '').replace(/\/$/, '');
+      return `<li><a href="${g.url}" target="_blank" rel="noopener noreferrer">${g.label} — ${clean}</a></li>`;
+    }).join('');
     const sections = (p.detail?.sections || [])
       .map(s => `<h4>${s.title}</h4>${s.content || ''}`)
       .join('');
@@ -770,6 +809,7 @@ function renderProjectDetailsForPrint() {
         <div class="proj-detail-meta">${p.date}</div>
       </div>
       <div class="proj-detail-overview">${p.detail?.overview || ''}</div>
+      ${githubLinks ? `<div class="proj-detail-github"><div class="proj-detail-github-title">GitHub</div><ul>${githubLinks}</ul></div>` : ''}
       <div class="proj-detail-body">${sections}</div>
     </div>`;
   }).join('');
